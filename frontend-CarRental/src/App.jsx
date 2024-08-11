@@ -5,22 +5,17 @@ import Contact from './components/templates/Contact'
 import Header from './components/templates/Header'
 import Footer from './components/templates/Footer'
 import About from './components/templates/About'
+import Booking from './components/templates/Booking'
+import Team from './components/templates/Team'
 
 
 function App() {
 
   return (
     <>
-<<<<<<< HEAD
-    <About />
-    {/* <Service /> */}
-    {/* <Contact/> */}
-    {/* <Detail/> */}
-=======
       <Header />
-      <Service />
+      <Team />
       <Footer />
->>>>>>> 8cb54978768422346c3a2ed1ec6ffff0ce0299fa
     </>
   )
 }
