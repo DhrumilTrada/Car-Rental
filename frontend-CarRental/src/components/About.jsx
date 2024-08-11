@@ -74,9 +74,10 @@ function About() {
       </div>
       <div className="container-fluid position-relative nav-bar p-0">
         <div className="position-relative px-lg-5" style={{ zIndex: 9 }}>
-          <nav className="navbar navbar-expand-sm bg-secondary navbar-dark py-6 py-lg-0 pl-3 pl-lg-5">
+          <nav className="navbar navbar-expand-sm bg-secondary navbar-dark py-6 py-lg-0 pl-3 pl-lg-5">cc
             <a href="index.html" className="navbar-brand">
-              <h1 className="text-uppercase text-primary mb-1">Royal Cars</h1>
+              {/* <h1 className="text-uppercase text-primary mb-1">Royal Cars</h1> */}
+              <img src="/img/DHlogo.png" style={{height:'90px',width:'80px'}}/>
             </a>
             <button
               type="button"
