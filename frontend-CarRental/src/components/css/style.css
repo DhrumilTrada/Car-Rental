@@ -101,12 +101,12 @@ h6,
 }
 
 .carousel-caption {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(28, 30, 50, .7);
-    z-index: 1;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: rgba(28, 30, 50, .7) !important;
+    z-index: 1 !important;
 }
 
 @media (max-width: 576px) {
@@ -341,4 +341,3 @@ h6,
   .testimonial-carousel .owl-item:not(.center) .testimonial-item {
     transform: scale(0.9);
   }
-
