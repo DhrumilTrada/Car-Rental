@@ -3,7 +3,8 @@ import OwlCarousel from 'react-owl-carousel';
 import RentItem from './RentItem';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
-import './css/style.css'
+import '../../css/style.css'
+
 const RelatedCarousel = ({ carItems, carouselOptions }) => {
   return (
     <div className="related-carousel position-relative" style={{ padding: '0 30px' }}>
