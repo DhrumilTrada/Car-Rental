@@ -318,4 +318,11 @@ h6,
 .bg-banner {
     background: linear-gradient(rgba(28, 30, 50, .9), rgba(28, 30, 50, .9)), url(../img/bg-banner.jpg);
     background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.owl-item.active .rent-item {
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
