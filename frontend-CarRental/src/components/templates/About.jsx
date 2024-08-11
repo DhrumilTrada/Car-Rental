@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Carousel from './Carousels/Carousel';
-
+import '../js/main'
+import { handleScrollToTop } from "./Carousels/Carousel";
 
 function About() {
   
@@ -172,10 +173,9 @@ function About() {
         <Carousel images={imageArray}/>
       </div>
       {/* Back to Top */}
-      <a href="#" className="btn btn-lg btn-primary btn-lg-square back-to-top">
+      <button onClick={handleScrollToTop} className="btn btn-lg btn-primary btn-lg-square back-to-top">
         <i className="fa fa-angle-double-up" />
-      </a>
-  
+      </button>
     </div>
   );
 }

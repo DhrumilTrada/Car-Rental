@@ -326,4 +326,19 @@ h6,
     transform: scale(1.05); 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
+.testimonial-carousel .owl-item {
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; 
+  }
+  
+  .testimonial-carousel .owl-item.center {
+    opacity: 1;
+  }
+  
+  .testimonial-carousel .owl-item.center .testimonial-item {
+    transform: scale(1.05);
+  }
+    
+  .testimonial-carousel .owl-item:not(.center) .testimonial-item {
+    transform: scale(0.9);
+  }
 
