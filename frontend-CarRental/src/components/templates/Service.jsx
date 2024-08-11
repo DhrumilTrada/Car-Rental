@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Carousel from "./Carousels/Carousel";
+import Carousel, { handleScrollToTop } from "./Carousels/Carousel";
 
 function Service() {
   const imageArray = [
@@ -177,9 +177,9 @@ function Service() {
       </div>
       {/* Vendor End */}
       {/* Back to Top */}
-      <a href="#" className="btn btn-lg btn-primary btn-lg-square back-to-top">
+      <button onClick={handleScrollToTop} className="btn btn-lg btn-primary btn-lg-square back-to-top">
         <i className="fa fa-angle-double-up" />
-      </a>
+      </button>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import '../../css/carousel.css'
 
 export class Carousel extends Component {
   render() {
-    const { images } = this.props;  // Receive images as a prop
+    const { images } = this.props;
 
     return (
       <div>
@@ -25,3 +25,10 @@ export class Carousel extends Component {
 }
 
 export default Carousel;
+
+export const handleScrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+};
