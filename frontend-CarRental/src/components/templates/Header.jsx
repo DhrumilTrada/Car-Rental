@@ -3,7 +3,7 @@ import { useState } from "react";
 
 function Header() {
     const [ date, setDate ] = useState(new Date());
-    const [ time, setTime ] = useState(new Date().toLocaleTimeString())
+    const [ time, setTime ] = useState(new Date())
     const today = new Date().toISOString().split('T')[0];
     const getCurrentTime = () => {
         const now = new Date();
@@ -63,7 +63,7 @@ function Header() {
         <div className="position-relative px-lg-5" style={{ zIndex: 9 }}>
           <nav className="navbar navbar-expand-lg bg-secondary navbar-dark py-3 py-lg-0 pl-3 pl-lg-5">
             <a href="index.html" className="navbar-brand">
-              <h1 className="text-uppercase text-primary mb-1">Royal Cars</h1>
+              <h1 className=" text-primary mb-1">DriveHex</h1>
             </a>
             <button
               type="button"

@@ -46,7 +46,7 @@ function About() {
       <div className="container py-5">
         <div className="container pt-5 pb-3">
           <h1 className="display-4 text-uppercase text-center mb-5">
-            Welcome To <span className="text-primary">Royal Cars</span>
+            Welcome To <span className="text-primary">DriveHex</span>
           </h1>
           <div className="row justify-content-center">
             <div className="col-lg-10 text-center">
