@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/style.css'
 import './css/bootstrap.min.css'
@@ -9,7 +8,7 @@ import Carousel from "./Carousel";
 
 function About() {
     const [ date, setDate ] = useState(new Date());
-    const [ time, setTime ] = useState(new Date().toLocaleTimeString())
+    const [ time, setTime ] = useState(new Date())
     const today = new Date().toISOString().split('T')[0];
     const getCurrentTime = () => {
         const now = new Date();
