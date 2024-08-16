@@ -43,7 +43,7 @@ h6,
     height: 40px;
 }
 
-.btn-square,
+tn-square,
 .btn-sm-square,
 .btn-lg-square {
     padding-left: 0;
@@ -52,6 +52,7 @@ h6,
 }
 
 .back-to-top {
+    visibility: hidden;
     position: fixed;
     display: none;
     right: 30px;
@@ -243,8 +244,8 @@ h6,
 .related-carousel .owl-nav .owl-prev,
 .related-carousel .owl-nav .owl-next {
     position: relative;
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -340,4 +341,11 @@ h6,
     
   .testimonial-carousel .owl-item:not(.center) .testimonial-item {
     transform: scale(0.9);
+  }
+
+  input[type="date"]::-webkit-inner-spin-button,
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-inner-spin-button,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    display: none;
   }

@@ -1,8 +1,8 @@
 import React from 'react';
 
-const TeamItem = ({ imgSrc, name, designation, socialLinks }) => {
+const TeamItem = ({ imgSrc, name, designation, socialLinks, isActive }) => {
   return (
-    <div className="team-item">
+    <div className={`team-item ${isActive ? 'active' : ''}`}>
       <img className="img-fluid w-100" src={imgSrc} alt={name} />
       <div className="position-relative py-4">
         <h4 className="text-uppercase">{name}</h4>

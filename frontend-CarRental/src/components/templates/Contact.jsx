@@ -13,17 +13,6 @@ function Contact() {
   };
   const currentTime = getCurrentTime();
 
-  const imageArray = [
-    "/img/vendor-1.png",
-    "/img/vendor-2.png",
-    "/img/vendor-3.png",
-    "/img/vendor-4.png",
-    "/img/vendor-5.png",
-    "/img/vendor-6.png",
-    "/img/vendor-7.png",
-    "/img/vendor-8.png",
-  ];
-
   return (
     <div>
       {/* Page Header Start */}
@@ -31,9 +20,7 @@ function Contact() {
         <h1 className="display-3 text-uppercase text-white mb-3">Contact</h1>
         <div className="d-inline-flex text-white">
           <h6 className="text-uppercase m-0">
-            <a className="text-white" >
-              Home
-            </a>
+            <a className="text-white">Home</a>
           </h6>
           <h6 className="text-body m-0 px-3">/</h6>
           <h6 className="text-uppercase text-body m-0">Contact</h6>
@@ -138,16 +125,17 @@ function Contact() {
       {/* Vendor Start */}
       <div className="container-fluid py-5">
         <div className="container">
-          <Carousel images={imageArray} />
+        <Carousel />
         </div>
       </div>
       {/* Vendor End */}
       {/* Back to Top */}
-      <button onClick={handleScrollToTop} className="btn btn-lg btn-primary btn-lg-square back-to-top">
+      <button
+        onClick={handleScrollToTop}
+        className="btn btn-lg btn-primary btn-lg-square back-to-top"
+      >
         <i className="fa fa-angle-double-up" />
-      </button>
-      {/* JavaScript Libraries */}
-      {/* Template Javascript */}
+      </button> 
     </div>
   );
 }

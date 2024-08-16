@@ -1,41 +1,26 @@
 import React, { useEffect, useState } from "react";
-import Carousel from './Carousels/Carousel';
-import '../js/main'
+import Carousel from "./Carousels/Carousel";
 import { handleScrollToTop } from "./Carousels/Carousel";
 
 function About() {
-  
-  const [ date, setDate ] = useState(new Date());
-  const [ time, setTime ] = useState(new Date().toLocaleTimeString())
-  const today = new Date().toISOString().split('T')[0];
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date().toLocaleTimeString());
+  const today = new Date().toISOString().split("T")[0];
   const getCurrentTime = () => {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      return `${hours}:${minutes}`;
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    return `${hours}:${minutes}`;
   };
   const currentTime = getCurrentTime();
-
-    const imageArray = [
-      "/img/vendor-1.png",
-      "/img/vendor-2.png",
-      "/img/vendor-3.png",
-      "/img/vendor-4.png",
-      "/img/vendor-5.png",
-      "/img/vendor-6.png",
-      "/img/vendor-7.png",
-      "/img/vendor-8.png"
-    ];
-    
+  
   return (
     <div>
       <div className="container-fluid page-header">
         <h1 className="display-3 text-uppercase text-white mb-3">About</h1>
         <div className="d-inline-flex text-white">
           <h6 className="text-uppercase m-0">
-            <a className="text-white">
-              Home
-            </a>
+            <a className="text-white">Home</a>
           </h6>
           <h6 className="text-body m-0 px-3">/</h6>
           <h6 className="text-uppercase text-body m-0">About</h6>
@@ -135,9 +120,7 @@ function About() {
                   <p className="mb-4">
                     Lorem justo sit sit ipsum eos lorem kasd, kasd labore
                   </p>
-                  <a className="btn btn-primary py-2 px-4">
-                    Start Now
-                  </a>
+                  <a className="btn btn-primary py-2 px-4">Start Now</a>
                 </div>
               </div>
             </div>
@@ -153,9 +136,7 @@ function About() {
                   <p className="mb-4">
                     Lorem justo sit sit ipsum eos lorem kasd, kasd labore
                   </p>
-                  <a className="btn btn-primary py-2 px-4">
-                    Start Now
-                  </a>
+                  <a className="btn btn-primary py-2 px-4">Start Now</a>
                 </div>
                 <img
                   className="img-fluid flex-shrink-0 mr-n5 w-50 ml-4"
@@ -170,10 +151,13 @@ function About() {
       {/* Banner End */}
       {/* Vendor Start */}
       <div className="container py-5">
-        <Carousel images={imageArray}/>
+      <Carousel />
       </div>
       {/* Back to Top */}
-      <button onClick={handleScrollToTop} className="btn btn-lg btn-primary btn-lg-square back-to-top">
+      <button
+        onClick={handleScrollToTop}
+        className="btn btn-lg btn-primary btn-lg-square back-to-top"
+      >
         <i className="fa fa-angle-double-up" />
       </button>
     </div>

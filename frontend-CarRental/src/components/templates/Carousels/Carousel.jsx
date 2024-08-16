@@ -7,7 +7,16 @@ import '../../css/carousel.css';
 
 export class Carousel extends Component {
   render() {
-    const { images } = this.props;
+    const images = [
+      "/img/vendor-1.png",
+      "/img/vendor-2.png",
+      "/img/vendor-3.png",
+      "/img/vendor-4.png",
+      "/img/vendor-5.png",
+      "/img/vendor-6.png",
+      "/img/vendor-7.png",
+      "/img/vendor-8.png",
+    ];
 
     return (
       <div>

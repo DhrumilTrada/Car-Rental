@@ -57,17 +57,6 @@ function Detail() {
     },
   };
 
-  const imageArray = [
-    "/img/vendor-1.png",
-    "/img/vendor-2.png",
-    "/img/vendor-3.png",
-    "/img/vendor-4.png",
-    "/img/vendor-5.png",
-    "/img/vendor-6.png",
-    "/img/vendor-7.png",
-    "/img/vendor-8.png",
-  ];
-
   const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date());
   const today = new Date().toISOString().split("T")[0];
@@ -86,9 +75,7 @@ function Detail() {
         <h1 className="display-3 text-uppercase text-white mb-3">Car Detail</h1>
         <div className="d-inline-flex text-white">
           <h6 className="text-uppercase m-0">
-            <a className="text-white" >
-              Home
-            </a>
+            <a className="text-white">Home</a>
           </h6>
           <h6 className="text-body m-0 px-3">/</h6>
           <h6 className="text-uppercase text-body m-0">Car Detail</h6>
@@ -203,7 +190,7 @@ function Detail() {
                     className="custom-select px-4"
                     style={{ height: "50px" }}
                   >
-                    <option selected>Pickup Location</option>
+                    <option defaultValue>Pickup Location</option>
                     <option value={1}>Location 1</option>
                     <option value={2}>Location 2</option>
                     <option value={3}>Location 3</option>
@@ -214,7 +201,7 @@ function Detail() {
                     className="custom-select px-4"
                     style={{ height: "50px" }}
                   >
-                    <option selected>Drop Location</option>
+                    <option defaultValue>Drop Location</option>
                     <option value={1}>Location 1</option>
                     <option value={2}>Location 2</option>
                     <option value={3}>Location 3</option>
@@ -253,7 +240,7 @@ function Detail() {
                     className="custom-select px-4"
                     style={{ height: "50px" }}
                   >
-                    <option selected>Select Person</option>
+                    <option defaultValue>Select Person</option>
                     <option value={1}>Person 1</option>
                     <option value={2}>Person 2</option>
                     <option value={3}>Person 3</option>
@@ -288,12 +275,15 @@ function Detail() {
       {/* Vendor Start */}
       <div className="container-fluid py-5">
         <div className="container">
-          <Carousel images={imageArray} />
+          <Carousel />
         </div>
       </div>
       {/* Vendor End */}
       {/* Back to Top */}
-      <button onClick={handleScrollToTop} className="btn btn-lg btn-primary btn-lg-square back-to-top">
+      <button
+        onClick={handleScrollToTop}
+        className="btn btn-lg btn-primary btn-lg-square back-to-top"
+      >
         <i className="fa fa-angle-double-up" />
       </button>
     </div>

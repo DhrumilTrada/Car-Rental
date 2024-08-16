@@ -3,16 +3,7 @@ import Carousel from "./Carousels/Carousel";
 import { handleScrollToTop } from "./Carousels/Carousel";
 
 function Car() {
-    const imageArray = [
-        "/img/vendor-1.png",
-        "/img/vendor-2.png",
-        "/img/vendor-3.png",
-        "/img/vendor-4.png",
-        "/img/vendor-5.png",
-        "/img/vendor-6.png",
-        "/img/vendor-7.png",
-        "/img/vendor-8.png",
-      ];
+  
   return (
     <>
       <div>
@@ -23,9 +14,7 @@ function Car() {
           </h1>
           <div className="d-inline-flex text-white">
             <h6 className="text-uppercase m-0">
-              <a className="text-white" >
-                Home
-              </a>
+              <a className="text-white">Home</a>
             </h6>
             <h6 className="text-body m-0 px-3">/</h6>
             <h6 className="text-uppercase text-body m-0">Car Listing</h6>
@@ -61,9 +50,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" >
-                    $99.00/Day
-                  </a>
+                  <a className="btn btn-primary px-3">$99.00/Day</a>
                 </div>
               </div>
               <div className="col-lg-4 col-md-6 mb-2">
@@ -88,9 +75,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" >
-                    $99.00/Day
-                  </a>
+                  <a className="btn btn-primary px-3">$99.00/Day</a>
                 </div>
               </div>
               <div className="col-lg-4 col-md-6 mb-2">
@@ -115,9 +100,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" >
-                    $99.00/Day
-                  </a>
+                  <a className="btn btn-primary px-3">$99.00/Day</a>
                 </div>
               </div>
               <div className="col-lg-4 col-md-6 mb-2">
@@ -142,9 +125,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" >
-                    $99.00/Day
-                  </a>
+                  <a className="btn btn-primary px-3">$99.00/Day</a>
                 </div>
               </div>
               <div className="col-lg-4 col-md-6 mb-2">
@@ -169,9 +150,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" >
-                    $99.00/Day
-                  </a>
+                  <a className="btn btn-primary px-3">$99.00/Day</a>
                 </div>
               </div>
               <div className="col-lg-4 col-md-6 mb-2">
@@ -196,9 +175,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" >
-                    $99.00/Day
-                  </a>
+                  <a className="btn btn-primary px-3">$99.00/Day</a>
                 </div>
               </div>
             </div>
@@ -226,9 +203,7 @@ function Car() {
                     <p className="mb-4">
                       Lorem justo sit sit ipsum eos lorem kasd, kasd labore
                     </p>
-                    <a className="btn btn-primary py-2 px-4" >
-                      Start Now
-                    </a>
+                    <a className="btn btn-primary py-2 px-4">Start Now</a>
                   </div>
                 </div>
               </div>
@@ -244,9 +219,7 @@ function Car() {
                     <p className="mb-4">
                       Lorem justo sit sit ipsum eos lorem kasd, kasd labore
                     </p>
-                    <a className="btn btn-primary py-2 px-4" >
-                      Start Now
-                    </a>
+                    <a className="btn btn-primary py-2 px-4">Start Now</a>
                   </div>
                   <img
                     className="img-fluid flex-shrink-0 mr-n5 w-50 ml-4"
@@ -259,14 +232,17 @@ function Car() {
           </div>
         </div>
         <div className="container-fluid py-5">
-        <div className="container">
-          <Carousel images={imageArray} />
-        </div>
+          <div className="container">
+          <Carousel />
+          </div>
         </div>
         {/* Banner End */}
-        <button onClick={handleScrollToTop} className="btn btn-lg btn-primary btn-lg-square back-to-top">
-        <i className="fa fa-angle-double-up" />
-      </button>
+        <button
+          onClick={handleScrollToTop}
+          className="btn btn-lg btn-primary btn-lg-square back-to-top"
+        >
+          <i className="fa fa-angle-double-up" />
+        </button>
       </div>
     </>
   );

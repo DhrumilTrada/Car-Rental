@@ -9,7 +9,8 @@ function Footer() {
         style={{ marginTop: "90px" }}
       >
         <div className="row pt-5">
-          <div className="col-lg-3 col-md-6 mb-5">
+          {/* Get In Touch */}
+          <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-5">
             <h4 className="text-uppercase text-light mb-4">Get In Touch</h4>
             <p className="mb-2">
               <i className="fa fa-map-marker-alt text-white mr-3" />
@@ -51,8 +52,10 @@ function Footer() {
               </a>
             </div>
           </div>
-          <div className="col-lg-3 col-md-6 mb-5">
-            <h4 className="text-uppercase text-light mb-4">Usefull Links</h4>
+
+          {/* Useful Links */}
+          <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-5">
+            <h4 className="text-uppercase text-light mb-4">Useful Links</h4>
             <div className="d-flex flex-column justify-content-start">
               <a className="text-body mb-2" href="#">
                 <i className="fa fa-angle-right text-white mr-2" />
@@ -60,7 +63,7 @@ function Footer() {
               </a>
               <a className="text-body mb-2" href="#">
                 <i className="fa fa-angle-right text-white mr-2" />
-                Term &amp; Conditions
+                Terms & Conditions
               </a>
               <a className="text-body mb-2" href="#">
                 <i className="fa fa-angle-right text-white mr-2" />
@@ -72,50 +75,54 @@ function Footer() {
               </a>
               <a className="text-body mb-2" href="#">
                 <i className="fa fa-angle-right text-white mr-2" />
-                Return &amp; Refund
+                Return & Refund
               </a>
               <a className="text-body" href="#">
                 <i className="fa fa-angle-right text-white mr-2" />
-                Help &amp; FQAs
+                Help & FAQs
               </a>
             </div>
           </div>
-          <div className="col-lg-3 col-md-6 mb-5">
+
+          {/* Car Gallery */}
+          <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-5">
             <h4 className="text-uppercase text-light mb-4">Car Gallery</h4>
             <div className="row mx-n1">
               <div className="col-4 px-1 mb-2">
-                <a >
+                <a>
                   <img className="w-100" src="img/gallery-1.jpg" alt="" />
                 </a>
               </div>
               <div className="col-4 px-1 mb-2">
-                <a >
+                <a>
                   <img className="w-100" src="img/gallery-2.jpg" alt="" />
                 </a>
               </div>
               <div className="col-4 px-1 mb-2">
-                <a >
+                <a>
                   <img className="w-100" src="img/gallery-3.jpg" alt="" />
                 </a>
               </div>
               <div className="col-4 px-1 mb-2">
-                <a >
+                <a>
                   <img className="w-100" src="img/gallery-4.jpg" alt="" />
                 </a>
               </div>
               <div className="col-4 px-1 mb-2">
-                <a >
+                <a>
                   <img className="w-100" src="img/gallery-5.jpg" alt="" />
                 </a>
               </div>
               <div className="col-4 px-1 mb-2">
-                <a >
+                <a>
                   <img className="w-100" src="img/gallery-6.jpg" alt="" />
                 </a>
               </div>
             </div>
           </div>
-          <div className="col-lg-3 col-md-6 mb-5">
+
+          {/* Newsletter */}
+          <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-5">
             <h4 className="text-uppercase text-light mb-4">Newsletter</h4>
             <p className="mb-4">
               Volup amet magna clita tempor. Tempor sea eos vero ipsum. Lorem
@@ -140,6 +147,8 @@ function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Footer bottom */}
       <div className="container-fluid bg-dark py-4 px-sm-3 px-md-5">
         <p className="mb-2 text-center text-body">
           © <a href="https://freewebsitecode.com/">Your Site Name</a>. All
