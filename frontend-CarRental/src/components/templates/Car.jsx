@@ -23,7 +23,7 @@ function Car() {
           </h1>
           <div className="d-inline-flex text-white">
             <h6 className="text-uppercase m-0">
-              <a className="text-white" href>
+              <a className="text-white" >
                 Home
               </a>
             </h6>
@@ -61,7 +61,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" href>
+                  <a className="btn btn-primary px-3" >
                     $99.00/Day
                   </a>
                 </div>
@@ -88,7 +88,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" href>
+                  <a className="btn btn-primary px-3" >
                     $99.00/Day
                   </a>
                 </div>
@@ -115,7 +115,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" href>
+                  <a className="btn btn-primary px-3" >
                     $99.00/Day
                   </a>
                 </div>
@@ -142,7 +142,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" href>
+                  <a className="btn btn-primary px-3" >
                     $99.00/Day
                   </a>
                 </div>
@@ -169,7 +169,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" href>
+                  <a className="btn btn-primary px-3" >
                     $99.00/Day
                   </a>
                 </div>
@@ -196,7 +196,7 @@ function Car() {
                       <span>25K</span>
                     </div>
                   </div>
-                  <a className="btn btn-primary px-3" href>
+                  <a className="btn btn-primary px-3" >
                     $99.00/Day
                   </a>
                 </div>
@@ -226,7 +226,7 @@ function Car() {
                     <p className="mb-4">
                       Lorem justo sit sit ipsum eos lorem kasd, kasd labore
                     </p>
-                    <a className="btn btn-primary py-2 px-4" href>
+                    <a className="btn btn-primary py-2 px-4" >
                       Start Now
                     </a>
                   </div>
@@ -244,7 +244,7 @@ function Car() {
                     <p className="mb-4">
                       Lorem justo sit sit ipsum eos lorem kasd, kasd labore
                     </p>
-                    <a className="btn btn-primary py-2 px-4" href>
+                    <a className="btn btn-primary py-2 px-4" >
                       Start Now
                     </a>
                   </div>

@@ -84,32 +84,32 @@ function Footer() {
             <h4 className="text-uppercase text-light mb-4">Car Gallery</h4>
             <div className="row mx-n1">
               <div className="col-4 px-1 mb-2">
-                <a href>
+                <a >
                   <img className="w-100" src="img/gallery-1.jpg" alt="" />
                 </a>
               </div>
               <div className="col-4 px-1 mb-2">
-                <a href>
+                <a >
                   <img className="w-100" src="img/gallery-2.jpg" alt="" />
                 </a>
               </div>
               <div className="col-4 px-1 mb-2">
-                <a href>
+                <a >
                   <img className="w-100" src="img/gallery-3.jpg" alt="" />
                 </a>
               </div>
               <div className="col-4 px-1 mb-2">
-                <a href>
+                <a >
                   <img className="w-100" src="img/gallery-4.jpg" alt="" />
                 </a>
               </div>
               <div className="col-4 px-1 mb-2">
-                <a href>
+                <a >
                   <img className="w-100" src="img/gallery-5.jpg" alt="" />
                 </a>
               </div>
               <div className="col-4 px-1 mb-2">
-                <a href>
+                <a >
                   <img className="w-100" src="img/gallery-6.jpg" alt="" />
                 </a>
               </div>

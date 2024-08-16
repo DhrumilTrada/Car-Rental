@@ -21,7 +21,7 @@ function Booking() {
   <div className="container-fluid page-header">
     <h1 className="display-3 text-uppercase text-white mb-3">Car Booking</h1>
     <div className="d-inline-flex text-white">
-      <h6 className="text-uppercase m-0"><a className="text-white" href>Home</a></h6>
+      <h6 className="text-uppercase m-0"><a className="text-white" >Home</a></h6>
       <h6 className="text-body m-0 px-3">/</h6>
       <h6 className="text-uppercase text-body m-0">Car Booking</h6>
     </div>
@@ -52,10 +52,10 @@ function Booking() {
           <div className="d-flex pt-1">
             <h6>Share on:</h6>
             <div className="d-inline-flex">
-              <a className="px-2" href><i className="fab fa-facebook-f" /></a>
-              <a className="px-2" href><i className="fab fa-twitter" /></a>
-              <a className="px-2" href><i className="fab fa-linkedin-in" /></a>
-              <a className="px-2" href><i className="fab fa-pinterest" /></a>
+              <a className="px-2" ><i className="fab fa-facebook-f" /></a>
+              <a className="px-2" ><i className="fab fa-twitter" /></a>
+              <a className="px-2" ><i className="fab fa-linkedin-in" /></a>
+              <a className="px-2" ><i className="fab fa-pinterest" /></a>
             </div>
           </div>
         </div>

@@ -19,7 +19,7 @@ function Service() {
         <h1 className="display-3 text-uppercase text-white mb-3">Service</h1>
         <div className="d-inline-flex text-white">
           <h6 className="text-uppercase m-0">
-            <a className="text-white" href>
+            <a className="text-white" >
               Home
             </a>
           </h6>
@@ -161,7 +161,7 @@ function Service() {
               <p className="mb-4">
                 Only for Sunday from 1st Jan to 30th Jan 2045
               </p>
-              <a className="btn btn-primary mt-2 py-3 px-5" href>
+              <a className="btn btn-primary mt-2 py-3 px-5" >
                 Register Now
               </a>
             </div>

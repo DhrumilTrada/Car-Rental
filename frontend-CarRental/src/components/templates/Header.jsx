@@ -19,12 +19,12 @@ function Header() {
         <div className="row">
           <div className="col-md-6 text-center text-lg-left mb-2 mb-lg-0">
             <div className="d-inline-flex align-items-center">
-              <a className="text-body pr-3" href>
+              <a className="text-body pr-3" >
                 <i className="fa fa-phone-alt mr-2" />
                 +012 345 6789
               </a>
               <span className="text-body">|</span>
-              <a className="text-body px-3" href>
+              <a className="text-body px-3" >
                 <i className="fa fa-envelope mr-2" />
                 info@example.com
               </a>
@@ -141,7 +141,7 @@ function Header() {
               className="custom-select px-4 mb-3"
               style={{ height: "40px" }}
             >
-              <option selected>Pickup Location</option>
+              <option defaultValue>Pickup Location</option>
               <option value={1}>Location 1</option>
               <option value={2}>Location 2</option>
               <option value={3}>Location 3</option>
@@ -152,7 +152,7 @@ function Header() {
               className="custom-select px-4 mb-3"
               style={{ height: "40px" }}
             >
-              <option selected>Drop Location</option>
+              <option defaultValue>Drop Location</option>
               <option value={1}>Location 1</option>
               <option value={2}>Location 2</option>
               <option value={3}>Location 3</option>
@@ -191,7 +191,7 @@ function Header() {
               className="custom-select px-4 mb-3"
               style={{ height: "40px" }}
             >
-              <option selected>Select A Car</option>
+              <option defaultValue>Select A Car</option>
               <option value={1}>Car 1</option>
               <option value={2}>Car 1</option>
               <option value={3}>Car 1</option>
