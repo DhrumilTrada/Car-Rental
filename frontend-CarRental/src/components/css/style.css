@@ -1,7 +1,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    font-size: 12px; /* Base font size */
+    font-size: 14px;
 }
 :root {
     --primary: #F77D0A;
@@ -43,7 +43,7 @@ h6,
     height: 40px;
 }
 
-tn-square,
+.btn-square,
 .btn-sm-square,
 .btn-lg-square {
     padding-left: 0;
@@ -58,6 +58,7 @@ tn-square,
     right: 30px;
     bottom: 30px;
     z-index: 99;
+    font-size: 12px;
 }
 
 .nav-bar::before {

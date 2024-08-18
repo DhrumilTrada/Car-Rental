@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { event } from "jquery";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
 function Header() {
@@ -15,7 +16,10 @@ function Header() {
   };
 
   const currentTime = getCurrentTime();
-
+  useEffect(() => {
+    setDate("");
+    setTime("");
+  }, [])
   const isCarsActive =
     location.pathname === "/car_display" ||
     location.pathname === "/details" ||
@@ -199,11 +203,10 @@ function Header() {
         </div>
       </div>
       {/* Navbar End */}
-
       {/* Search Start */}
       <div className="container-fluid bg-white pt-3 px-lg-5">
         <div className="row mx-n2">
-          <div className="col-xl-6 col-lg-2 col-md-4 col-sm-6 px-2 mb-3">
+          <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <select
               className="custom-select px-4"
               style={{ height: "40px" }}
@@ -214,7 +217,7 @@ function Header() {
               <option value={3}>Location 3</option>
             </select>
           </div>
-          <div className="col-xl-6 col-lg-2 col-md-4 col-sm-6 px-2 mb-3">
+          <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <select
               className="custom-select px-4"
               style={{ height: "40px" }}
@@ -225,7 +228,7 @@ function Header() {
               <option value={3}>Location 3</option>
             </select>
           </div>
-          <div className="col-xl-6 col-lg-2 col-md-4 col-sm-6 px-2 mb-3">
+          <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <div className="position-relative">
               <input
                 type="date"
@@ -235,12 +238,14 @@ function Header() {
                 min={today}
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                onClick={() => setDate(today)}
+                onClick={(e) => {
+                  if(!e.target.value) setDate(today)
+                }}
               />
               <i className="fa fa-calendar-alt position-absolute" style={{ right: "10px", top: "50%", transform: "translateY(-50%)", color: "#3A3A3A"}} />
             </div>
           </div>
-          <div className="col-xl-6 col-lg-2 col-md-4 col-sm-6 px-2 mb-3">
+          <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <div className="position-relative">
               <input
                 type="time"
@@ -250,12 +255,14 @@ function Header() {
                 min={currentTime}
                 value={time}
                 onChange={(e) => setTime(e.target.value)}
-                onClick={() => setTime(currentTime)}
+                onClick={(e) => {
+                  if(!e.target.value) setTime(currentTime)
+                }}
               />
               <i className="fa fa-clock position-absolute" style={{ right: "10px", top: "50%", transform: "translateY(-50%)", color: "#3A3A3A" }} />
             </div>
           </div>
-          <div className="col-xl-6 col-lg-2 col-md-4 col-sm-6 px-2 mb-3">
+          <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <select
               className="custom-select px-4"
               style={{ height: "40px" }}
@@ -266,7 +273,7 @@ function Header() {
               <option value={3}>Car 3</option>
             </select>
           </div>
-          <div className="col-xl-6 col-lg-2 col-md-4 col-sm-6 px-2 mb-3">
+          <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <button
               className="btn btn-primary btn-block"
               type="submit"

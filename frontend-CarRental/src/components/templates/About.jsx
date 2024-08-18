@@ -3,16 +3,6 @@ import Carousel from "./Carousels/Carousel";
 import { handleScrollToTop } from "./Carousels/Carousel";
 
 function About() {
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date().toLocaleTimeString());
-  const today = new Date().toISOString().split("T")[0];
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    return `${hours}:${minutes}`;
-  };
-  const currentTime = getCurrentTime();
   
   return (
     <div>

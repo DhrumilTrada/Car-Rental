@@ -86,7 +86,7 @@ function Contact() {
             <div className="col-lg-5 mb-2">
               <div
                 className="bg-secondary d-flex flex-column justify-content-center px-5 mb-4"
-                style={{ height: "325px" }}
+                style={{ height: "400px" }}
               >
                 <div className="d-flex mb-3">
                   <i className="fa fa-2x fa-map-marker-alt text-primary flex-shrink-0 mr-3" />

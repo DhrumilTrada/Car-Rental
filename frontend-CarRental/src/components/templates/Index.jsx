@@ -3,8 +3,8 @@ import Carousel, { handleScrollToTop } from "./Carousels/Carousel";
 
 const HomeCarousel = ({
   items,
-  prevControlStyle = { width: "42px", height: "42px" },
-  nextControlStyle = { width: "42px", height: "42px" },
+  prevControlStyle = { width: "38px", height: "42px" },
+  nextControlStyle = { width: "38px", height: "42px" },
   carouselId = "header-carousel",
   containerStyle = { marginBottom: "90px" },
 }) => {
@@ -43,7 +43,7 @@ const HomeCarousel = ({
           data-slide="prev"
         >
           <div className="btn btn-dark" style={prevControlStyle}>
-            <span className="carousel-control-prev-icon mb-n3 mr-n2 ml-n2" />
+            <span className="carousel-control-prev-icon mb-n2 mr-n2 ml-n2" />
           </div>
         </a>
         <a
@@ -52,7 +52,7 @@ const HomeCarousel = ({
           data-slide="next"
         >
           <div className="btn btn-dark" style={nextControlStyle}>
-            <span className="carousel-control-next-icon mb-n3 mr-n2 ml-n2" />
+            <span className="carousel-control-next-icon mb-n2 mr-n2 ml-n2" />
           </div>
         </a>
       </div>
