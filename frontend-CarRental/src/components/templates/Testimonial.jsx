@@ -1,6 +1,7 @@
 import React from "react";
 import TestimonialCarousel from "./Carousels/TestimonialCarousel";
 import Carousel, { handleScrollToTop } from "./Carousels/Carousel";
+import { Link } from 'react-router-dom'
 
 function Testimonial() {
   const testimonials = [
@@ -39,7 +40,7 @@ function Testimonial() {
         </h1>
         <div className="d-inline-flex text-white">
           <h6 className="text-uppercase m-0">
-            <a className="text-white">Home</a>
+          <Link to='/' className="text-white">Home</Link>
           </h6>
           <h6 className="text-body m-0 px-3">/</h6>
           <h6 className="text-uppercase text-body m-0">Testimonial</h6>
@@ -48,7 +49,11 @@ function Testimonial() {
       {/* Page Header Start */}
       {/* Testimonial Start */}
       <TestimonialCarousel testimonials={testimonials} />
-      <Carousel />
+      <div className="container-fluid py-5">
+        <div className="container">
+        <Carousel />
+        </div>
+      </div>
       {/* Testimonial End */}
       {/* Back to Top */}
       <button

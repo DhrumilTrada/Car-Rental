@@ -1,5 +1,6 @@
 import React from "react";
 import Carousel, { handleScrollToTop } from "./Carousels/Carousel";
+import About from "./About";
 
 const HomeCarousel = ({
   items,
@@ -23,7 +24,7 @@ const HomeCarousel = ({
                   <h4 className="text-white text-uppercase mb-md-3">
                     {item.title}
                   </h4>
-                  <h1 className="display-1 text-white mb-md-4">
+                  <h1 className="display-2 text-white mb-md-4">
                     {item.subtitle}
                   </h1>
                   <a
@@ -87,6 +88,7 @@ function Index() {
       >
         <i className="fa fa-angle-double-up" />
       </button>
+      {/* <About /> */}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import Carousel from "./Carousels/Carousel";
 import { handleScrollToTop } from "./Carousels/Carousel";
+import { Link } from 'react-router-dom'
 
 function Car() {
   
@@ -14,7 +15,7 @@ function Car() {
           </h1>
           <div className="d-inline-flex text-white">
             <h6 className="text-uppercase m-0">
-              <a className="text-white">Home</a>
+              <Link to='/' className="text-white">Home</Link>
             </h6>
             <h6 className="text-body m-0 px-3">/</h6>
             <h6 className="text-uppercase text-body m-0">Car Listing</h6>
