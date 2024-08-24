@@ -1,13 +1,16 @@
-import { event } from "jquery";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import DatePickerC from "../React UI/DatePicker";
+import TimePickerC from "../React UI/TimePicker";
 
 function Header() {
   const location = useLocation();
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [time, setTime] = useState(new Date().toISOString().split("T")[1].substring(0, 5));
+  const [time, setTime] = useState(
+    new Date().toISOString().split("T")[1].substring(0, 5)
+  );
   const today = new Date().toISOString().split("T")[0];
-  
+
   const getCurrentTime = () => {
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, "0");
@@ -19,21 +22,20 @@ function Header() {
   useEffect(() => {
     setDate("");
     setTime("");
-  }, [])
+  }, []);
   const isCarsActive =
     location.pathname === "/car_display" ||
     location.pathname === "/details" ||
     location.pathname === "/booking";
 
   const isPagesActive =
-    location.pathname === "/team" ||
-    location.pathname === "/testimonials";
+    location.pathname === "/team" || location.pathname === "/testimonials";
 
   const closeDropdown = (e) => {
-    const dropdown = e.target.closest('.dropdown');
+    const dropdown = e.target.closest(".dropdown");
     if (dropdown) {
-      dropdown.classList.remove('show');
-      dropdown.querySelector('.dropdown-menu').classList.remove('show');
+      dropdown.classList.remove("show");
+      dropdown.querySelector(".dropdown-menu").classList.remove("show");
     }
   };
 
@@ -126,7 +128,11 @@ function Header() {
                 >
                   Service
                 </NavLink>
-                <div className={`nav-item dropdown ${isCarsActive ? "active" : ""}`}>
+                <div
+                  className={`nav-item dropdown ${
+                    isCarsActive ? "active" : ""
+                  }`}
+                >
                   <Link
                     to="#"
                     className="nav-link dropdown-toggle"
@@ -162,7 +168,11 @@ function Header() {
                     </NavLink>
                   </div>
                 </div>
-                <div className={`nav-item dropdown ${isPagesActive ? "active" : ""}`}>
+                <div
+                  className={`nav-item dropdown ${
+                    isPagesActive ? "active" : ""
+                  }`}
+                >
                   <Link
                     to="#"
                     className="nav-link dropdown-toggle"
@@ -207,10 +217,7 @@ function Header() {
       <div className="container-fluid bg-white pt-3 px-lg-5">
         <div className="row mx-n2">
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select
-              className="custom-select px-4"
-              style={{ height: "40px" }}
-            >
+            <select className="custom-select px-4" style={{ height: "40px" }}>
               <option defaultValue>Pickup Location</option>
               <option value={1}>Location 1</option>
               <option value={2}>Location 2</option>
@@ -218,10 +225,7 @@ function Header() {
             </select>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select
-              className="custom-select px-4"
-              style={{ height: "40px" }}
-            >
+            <select className="custom-select px-4" style={{ height: "40px" }}>
               <option defaultValue>Drop Location</option>
               <option value={1}>Location 1</option>
               <option value={2}>Location 2</option>
@@ -230,7 +234,8 @@ function Header() {
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <div className="position-relative">
-              <input
+              {/* <input
+                ref={dateInputRef}
                 type="date"
                 style={{ height: "40px", paddingRight: "40px" }}
                 className="form-control px-4"
@@ -239,34 +244,29 @@ function Header() {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 onClick={(e) => {
-                  if(!e.target.value) setDate(today)
+                  if (!e.target.value) setDate(today);
                 }}
               />
-              <i className="fa fa-calendar-alt position-absolute" style={{ right: "10px", top: "50%", transform: "translateY(-50%)", color: "#3A3A3A"}} />
+              <i
+                className="fa fa-calendar-alt position-absolute"
+                style={{
+                  right: "10px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  color: "#3A3A3A",
+                  cursor: "pointer",
+                }}
+              /> */}
+              <DatePickerC />
             </div>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <div className="position-relative">
-              <input
-                type="time"
-                style={{ height: "40px", paddingRight: "40px" }}
-                className="form-control px-4"
-                placeholder="Pickup Time"
-                min={currentTime}
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                onClick={(e) => {
-                  if(!e.target.value) setTime(currentTime)
-                }}
-              />
-              <i className="fa fa-clock position-absolute" style={{ right: "10px", top: "50%", transform: "translateY(-50%)", color: "#3A3A3A" }} />
+              <TimePickerC />
             </div>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select
-              className="custom-select px-4"
-              style={{ height: "40px" }}
-            >
+            <select className="custom-select px-4" style={{ height: "40px" }}>
               <option defaultValue>Select A Car</option>
               <option value={1}>Car 1</option>
               <option value={2}>Car 2</option>

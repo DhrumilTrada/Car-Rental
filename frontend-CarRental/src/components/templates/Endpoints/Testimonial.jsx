@@ -1,6 +1,6 @@
 import React from "react";
-import TestimonialCarousel from "./Carousels/TestimonialCarousel";
-import Carousel, { handleScrollToTop } from "./Carousels/Carousel";
+import TestimonialCarousel from "../Carousels/TestimonialCarousel";
+import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link } from 'react-router-dom'
 
 function Testimonial() {

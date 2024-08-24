@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Footer from "./components/templates/Footer";
-import Header from "./components/templates/Header";
+import Header from "./components/templates/Endpoints/Header"
+import Footer from "./components/templates/Endpoints/Footer"
 
 function Layout() {
   return (

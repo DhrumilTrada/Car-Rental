@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import RelatedCarousel from "./Carousels/RelatedCarousel";
-import Carousel, { handleScrollToTop } from "./Carousels/Carousel";
+import RelatedCarousel from "../Carousels/RelatedCarousel";
+import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link } from 'react-router-dom'
 
 function Detail() {

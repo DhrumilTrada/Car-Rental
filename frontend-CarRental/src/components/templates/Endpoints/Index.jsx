@@ -1,5 +1,5 @@
 import React from "react";
-import Carousel, { handleScrollToTop } from "./Carousels/Carousel";
+import { handleScrollToTop } from "../Carousels/Carousel";
 import About from "./About";
 
 const HomeCarousel = ({
@@ -15,7 +15,7 @@ const HomeCarousel = ({
         <div className="carousel-inner">
           {items.map((item, index) => (
             <div
-              className={`carousel-item ${index === 0 ? "active" : ""}`}
+              className={`carousel-item h-full ${index === 0 ? "active" : ""}`}
               key={index}
             >
               <img className="w-100" src={item.imageSrc} alt="Image" />
@@ -24,7 +24,7 @@ const HomeCarousel = ({
                   <h4 className="text-white text-uppercase mb-md-3">
                     {item.title}
                   </h4>
-                  <h1 className="display-2 text-white mb-md-4">
+                  <h1 className="display-3 text-white mb-md-4">
                     {item.subtitle}
                   </h1>
                   <a

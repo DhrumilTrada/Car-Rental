@@ -1,6 +1,6 @@
 import React from "react";
-import Carousel, { handleScrollToTop } from "./Carousels/Carousel";
-import TeamCarousel from "./Carousels/TeamCarousel";
+import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
+import TeamCarousel from "../Carousels/TeamCarousel";
 import { Link } from 'react-router-dom'
 
 function Team() {

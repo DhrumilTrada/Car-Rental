@@ -344,9 +344,9 @@ h6,
     transform: scale(0.9);
   }
 
-  input[type="date"]::-webkit-inner-spin-button,
-  input[type="date"]::-webkit-calendar-picker-indicator,
-  input[type="time"]::-webkit-inner-spin-button,
-  input[type="time"]::-webkit-calendar-picker-indicator {
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
-  }
+}

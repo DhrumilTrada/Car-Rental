@@ -1,5 +1,5 @@
 import React from "react";
-import Carousel, { handleScrollToTop } from "./Carousels/Carousel";
+import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link } from 'react-router-dom'
 
 function Booking() {
