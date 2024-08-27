@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     # Internal Apps
     'users',
+    'cars',
 ]
 
 MIDDLEWARE = [
@@ -67,8 +68,12 @@ WSGI_APPLICATION = 'auth.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'DriveHex',
+        'USER': 'postgres',
+        'PASSWORD': 'Dhrumil11@',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
 }
 
@@ -154,5 +159,5 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'drivehex0422@gmail.com' 
 EMAIL_HOST_PASSWORD = 'snqzrkzoaoutgjac' 
 DEFAULT_FROM_EMAIL = 'drivehex0422@gmail.com'
-DOMAIN = 'drivehex.com' 
+DOMAIN = env("DOMAIN") 
 SITE_NAME = 'DriveHex'
