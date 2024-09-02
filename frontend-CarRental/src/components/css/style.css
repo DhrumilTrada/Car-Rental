@@ -350,3 +350,13 @@ input[type="time"]::-webkit-inner-spin-button,
 input[type="time"]::-webkit-calendar-picker-indicator {
     display: none;
 }
+
+.unavailable:hover .model-text{
+    text-decoration: line-through;
+    color: rgb(178, 70, 70);
+    transition: all 0.4s ease-in-out;
+}
+.unavailable:hover a{
+    pointer-events: none;    
+    transition: all 0.4s ease-in-out;
+}

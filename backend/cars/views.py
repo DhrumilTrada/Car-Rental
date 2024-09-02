@@ -1,76 +1,102 @@
-from rest_framework import status
+from django.utils.dateparse import parse_date
+from rest_framework import status, generics
 from rest_framework.response import Response
+from datetime import date
 from rest_framework.decorators import api_view
-from users.models import User
-from users.serializers import CreateUserSerializer
-from .models import Car
+from .models import Location, Car, Customer, Booking, Review, Insurance, Maintenance, Payment
+from .serializers import LocationSerializer, CarSerializer, CustomerSerializer, BookingSerializer, ReviewSerializer, InsuranceSerializer, MaintenanceSerializer, PaymentSerializer, LocationNameSerializer
+
+
+
+@api_view(['GET'])
+def view_locations(request):
+    if request.method == 'GET':
+        locations = Location.objects.all()
+        locations = LocationNameSerializer(locations, many=True)
+        return Response({'locations': locations.data}, status=status.HTTP_200_OK)
+    
+@api_view(['POST'])
+def get_car(request):
+    if request.method == 'POST':
+        pickup = request.data.get('location')
+        car = Car.objects.filter(pickup_location__name=pickup)
+        car =  CarSerializer(car, many=True)
+        return Response({'car': car.data}, status=status.HTTP_200_OK)
+    
+@api_view(['POST'])
+def available_cars(request):
+    current_date = date.today()
+    end_date = parse_date(request.data.get('pickup_date'))
+    print(current_date, end_date)
+    unavailable_cars = Booking.objects.filter(pickup_date__lte=end_date, end_date__gte=current_date)
+    if unavailable_cars:
+        available_cars = Car.objects.exclude(id__in=unavailable_cars.values_list('car_id', flat=True))
+        unavailable_cars = Car.objects.filter(id__in=unavailable_cars.values_list('car_id', flat=True))
+        unavailable_cars = CarSerializer(unavailable_cars, many=True)
+        car_serializer = CarSerializer(available_cars, many=True)
+    else:
+        car_serializer = CarSerializer(Car.objects.all(), many=True)
+    return Response({'car': car_serializer.data, 'unavailable': unavailable_cars.data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def view_bookings(request):
+    if request.method == 'GET':
+        bookings = Booking.objects.all()
+        bookings = BookingSerializer(bookings, many=True)
+        customer_id = Customer.objects.get(user=1)
+        bookings_user = Booking.objects.filter(customer=customer_id.id)
+        # print(bookings_user[0].car, bookings_user[1].car)
+        return Response({'bookings': bookings.data}, status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
-def create_car(request):
-    if request.method == 'POST':
-        # name = request.data.get('name')
-        # address = request.data.get('address')
-        # contact_number = request.data.get('contact_number')
-        email = request.data.get('email')
-        # Get the User instance using the email
-        try:
-            print(email)
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-        phone_number = request.data.get('phone_number')
-        address = request.data.get('address')
-        driving_license_number = request.data.get('driving_license_number')
-        license_expiry_date = request.data.get('license_expiry_date')
-        print(license_expiry_date)
-        # # Directly create the Person instance in the PostgreSQL database
-        Customer.objects.create(user=user, phone_number=phone_number, address=address, driving_license_number=driving_license_number, license_expiry_date=license_expiry_date)
+def book_car(request):
+    user = request.user
+    car_id = request.data.get('car_id')
+    current_date = date.today()
+    end_date = parse_date(request.data.get('pickup_date'))
 
-        return Response({'message': 'Customer created successfully'}, status=status.HTTP_201_CREATED)
+    # Create a new booking
+    booking = Booking.objects.create(
+        user=user,
+        car_id=car_id,
+        start_date=current_date,
+        end_date=end_date
+    )
 
-# @api_view(['GET'])
-# def view(request):
-#     if request.method == 'GET':
-#         persons = Person.objects.using('postgres').all()
-#         print(persons)
-#         print()
-#         persons = PersonSerializer(persons, many=True)
-#         print(persons)
-#         return Response({'persons': persons.data}, status=status.HTTP_200_OK)
+    return Response({"message": "Car booked successfully!"}, status=status.HTTP_201_CREATED)
 
-from rest_framework import viewsets
-from .models import Car, Customer, Booking, Payment, Review, Insurance, Maintenance, Location
-from .serializers import CarSerializer, CustomerSerializer, BookingSerializer, PaymentSerializer, ReviewSerializer, InsuranceSerializer, MaintenanceSerializer, LocationSerializer
 
-class CarViewSet(viewsets.ModelViewSet):
+
+class LocationListCreateView(generics.ListCreateAPIView):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+    
+
+class CarListCreateView(generics.ListCreateAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
 
-class CustomerViewSet(viewsets.ModelViewSet):
+class CustomerListCreateView(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
 
-class BookingViewSet(viewsets.ModelViewSet):
+class BookingListCreateView(generics.ListCreateAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
 
-class PaymentViewSet(viewsets.ModelViewSet):
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer
-
-class ReviewViewSet(viewsets.ModelViewSet):
+class ReviewListCreateView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
-class InsuranceViewSet(viewsets.ModelViewSet):
+class InsuranceListCreateView(generics.ListCreateAPIView):
     queryset = Insurance.objects.all()
     serializer_class = InsuranceSerializer
 
-class MaintenanceViewSet(viewsets.ModelViewSet):
+class MaintenanceListCreateView(generics.ListCreateAPIView):
     queryset = Maintenance.objects.all()
     serializer_class = MaintenanceSerializer
 
-class LocationViewSet(viewsets.ModelViewSet):
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializer
+class PaymentListCreateView(generics.ListCreateAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer

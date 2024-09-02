@@ -1,28 +1,72 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import DatePickerC from "../React UI/DatePicker";
 import TimePickerC from "../React UI/TimePicker";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, reset } from "../features/auth/authSlice";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
+// import { toast } from "react-toastify";
 
 function Header() {
+  const user = localStorage.getItem("user");
+  if(user){
+    const access = JSON.parse(user)['access']
+    const user_id = jwtDecode(access)['user_id']
+  }
   const location = useLocation();
+  const navigate = useNavigate();
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [time, setTime] = useState(
     new Date().toISOString().split("T")[1].substring(0, 5)
   );
-  const today = new Date().toISOString().split("T")[0];
 
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    return `${hours}:${minutes}`;
+  const config = {
+    headers : {
+      "Content-Type": "application/json",
+    }
+  }
+
+  const [locations, setLocations] = useState([]);
+  const [loc, setLoc] = useState('')
+  const [cars, setCars] = useState([])
+  const today = new Date().toISOString().split("T")[0];
+  const [ex, setEx] = useState("")
+
+  const fetch = async () => {
+    try {
+      let response = await axios.get("http://127.0.0.1:8000/view-locations");
+      const locs = response.data.locations;
+      const locationNames = locs.map((location) => location.name);
+      setLocations(locationNames);
+    } catch (error) {
+      console.error("Error fetching locations:", error);
+    }
   };
 
-  const currentTime = getCurrentTime();
   useEffect(() => {
     setDate("");
     setTime("");
+    fetch();
+
   }, []);
+
+  const get_car = async() => {
+    try {
+      // console.log(loc)
+      let response = (await axios.post('http://127.0.0.1:8000/get-car/', {"location" : loc}, config)).data.car
+      const names = response.map(model => model.name)
+      setCars(response.map(car => car.model))
+      // console.log(cars)
+    } catch (error) {
+      console.error("Error fetching cars:", error);
+    }
+  }
+
+  useEffect(() => {
+    get_car();
+  }, [loc])
   const isCarsActive =
     location.pathname === "/car_display" ||
     location.pathname === "/details" ||
@@ -39,9 +83,16 @@ function Header() {
     }
   };
 
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(reset());
+    navigate("/");
+  };
+
   return (
     <>
-      {/* Header starts */}
       <div className="container-fluid bg-dark py-3 px-lg-5 d-none d-lg-block">
         <div className="row">
           <div className="col-md-6 text-center text-lg-left mb-2 mb-lg-0">
@@ -110,21 +161,21 @@ function Header() {
                   exact="true"
                   to="/"
                   className="nav-item nav-link"
-                  activeClassName="active"
+                  activeclassname="active"
                 >
                   Home
                 </NavLink>
                 <NavLink
                   to="/about"
                   className="nav-item nav-link"
-                  activeClassName="active"
+                  activeclassname="active"
                 >
                   About
                 </NavLink>
                 <NavLink
                   to="/service"
                   className="nav-item nav-link"
-                  activeClassName="active"
+                  activeclassname="active"
                 >
                   Service
                 </NavLink>
@@ -145,7 +196,7 @@ function Header() {
                     <NavLink
                       to="/car_display"
                       className="dropdown-item"
-                      activeClassName="active"
+                      activeclassname="active"
                       onClick={closeDropdown}
                     >
                       Car Listing
@@ -153,7 +204,7 @@ function Header() {
                     <NavLink
                       to="/details"
                       className="dropdown-item"
-                      activeClassName="active"
+                      activeclassname="active"
                       onClick={closeDropdown}
                     >
                       Car Detail
@@ -161,7 +212,7 @@ function Header() {
                     <NavLink
                       to="/booking"
                       className="dropdown-item"
-                      activeClassName="active"
+                      activeclassname="active"
                       onClick={closeDropdown}
                     >
                       Car Booking
@@ -185,7 +236,7 @@ function Header() {
                     <NavLink
                       to="/team"
                       className="dropdown-item"
-                      activeClassName="active"
+                      activeclassname="active"
                       onClick={closeDropdown}
                     >
                       The Team
@@ -193,35 +244,54 @@ function Header() {
                     <NavLink
                       to="/testimonials"
                       className="dropdown-item"
-                      activeClassName="active"
+                      activeclassname="active"
                       onClick={closeDropdown}
                     >
                       Testimonial
                     </NavLink>
                   </div>
                 </div>
-                <NavLink
-                  to="/contact"
-                  className="nav-item nav-link"
-                  activeClassName="active"
-                >
-                  Contact
-                </NavLink>
+                {user ? (
+                  <>
+                    <NavLink
+                      to="/contact"
+                      className="nav-item nav-link"
+                      activeclassname="active"
+                    >
+                      Contact
+                    </NavLink>
+                    <button
+                      onClick={handleLogout}
+                      className="nav-item nav-link btn"
+                    >
+                      SignOut
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <NavLink to="/contact" className="nav-item nav-link">
+                      Contact
+                    </NavLink>
+                    <NavLink to="/login" className="nav-item nav-link">
+                      Sign In
+                    </NavLink>
+                  </>
+                )}
               </div>
             </div>
           </nav>
         </div>
       </div>
-      {/* Navbar End */}
-      {/* Search Start */}
       <div className="container-fluid bg-white pt-3 px-lg-5">
         <div className="row mx-n2">
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select className="custom-select px-4" style={{ height: "40px" }}>
-              <option defaultValue>Pickup Location</option>
-              <option value={1}>Location 1</option>
-              <option value={2}>Location 2</option>
-              <option value={3}>Location 3</option>
+            <select className="custom-select px-4" style={{ height: "40px" }} onChange={(e) => setLoc(e.target.value)}>
+              <option value="">Pickup Location</option>
+              {locations.map((location, index) => (
+                <option key={index} value={location}>
+                  {location}
+                </option>
+              ))}
             </select>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
@@ -233,58 +303,32 @@ function Header() {
             </select>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <div className="position-relative">
-              {/* <input
-                ref={dateInputRef}
-                type="date"
-                style={{ height: "40px", paddingRight: "40px" }}
-                className="form-control px-4"
-                placeholder="Pickup Date"
-                min={today}
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                onClick={(e) => {
-                  if (!e.target.value) setDate(today);
-                }}
-              />
-              <i
-                className="fa fa-calendar-alt position-absolute"
-                style={{
-                  right: "10px",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                  color: "#3A3A3A",
-                  cursor: "pointer",
-                }}
-              /> */}
-              <DatePickerC />
-            </div>
+            <DatePickerC date={date} minDate={today} />
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <div className="position-relative">
-              <TimePickerC />
-            </div>
+            <TimePickerC time={time} />
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <select className="custom-select px-4" style={{ height: "40px" }}>
               <option defaultValue>Select A Car</option>
-              <option value={1}>Car 1</option>
-              <option value={2}>Car 2</option>
-              <option value={3}>Car 3</option>
+              {cars.map((car, index) => (
+                <option key={index} value={car}>
+                  {car}
+                </option>
+              ))}
             </select>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <button
               className="btn btn-primary btn-block"
-              type="submit"
               style={{ height: "40px" }}
             >
-              Search
+              Submit
             </button>
           </div>
         </div>
       </div>
-      {/* Header ends */}
+      {/* Search End */}
     </>
   );
 }

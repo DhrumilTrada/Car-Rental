@@ -60,11 +60,9 @@
 
 // // export default Login;
 
-
 // // blue theme
 // import React, { useState } from "react";
 // import "../../css/loginPage.css";
-
 
 // function LoginApp() {
 //   // State to track if the user is in sign-up mode
@@ -152,16 +150,18 @@
 
 // export default LoginApp;
 
-import React, { useState } from "react";
-import "../../css/loginPage.css"
-function LoginApp() {
-  // State to track if the user is in sign-up mode
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { register, reset } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import "../../css/loginPage.css";
+
+function Login() {
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
-  // State to track if the user is in forget password mode
   const [isForgetPasswordMode, setIsForgetPasswordMode] = useState(false);
 
-  // Handlers for switching between modes
   const handleSignUpClick = () => {
     setIsSignUpMode(true);
     setIsForgetPasswordMode(false);
@@ -176,13 +176,75 @@ function LoginApp() {
     setIsForgetPasswordMode(true);
   };
 
+  const [regData, setRegData] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    re_password: "",
+  });
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { first_name, last_name, email, password, re_password } = regData;
+  // const { email, password } = formData
+
+  const handleSignUpChange = (e) => {
+    setRegData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user, isLoading, isError, message, isSuccess } = useSelector(
+    (state) => state.auth
+  );
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (password !== re_password) {
+      toast.error("Passwords donot match.");
+    } else {
+      const userData = {
+        first_name,
+        last_name,
+        email,
+        password,
+        re_password,
+      };
+      dispatch(register(userData));
+    }
+  };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess && user) {
+      navigate("/");
+      toast.success(
+        "An activation email has been sent to your email. Please check your email"
+      );
+    }
+
+    dispatch(reset());
+  }, [isError, isSuccess, user, dispatch]);
+
   return (
-    <div className={`container ${isSignUpMode ? "sign-up-mode" : ""}`}>
+    <div className={`container1 ${isSignUpMode ? "sign-up-mode" : ""}`}>
       <div className="forms-container">
         <div className="signin-signup">
           {/* Sign-in form */}
           {!isForgetPasswordMode && (
-            <form action="#" className="sign-in-form">
+            <form action="#" className="sign-in-form form-demo">
               <h2 className="title">Sign in</h2>
               <div className="input-field">
                 <i className="fas fa-user" />
@@ -192,8 +254,11 @@ function LoginApp() {
                 <i className="fas fa-lock" />
                 <input type="password" placeholder="Password" />
               </div>
-              <input type="submit" value="Login" className="btn solid" />
-              <p className="forgot-password" onClick={handleForgetPasswordClick}>
+              <input type="submit" value="Login" className="btn-c solid" />
+              <p
+                className="forgot-password"
+                onClick={handleForgetPasswordClick}
+              >
                 Forgot your password?
               </p>
             </form>
@@ -201,33 +266,85 @@ function LoginApp() {
 
           {/* Sign-up form */}
           {!isForgetPasswordMode && (
-            <form action="#" className="sign-up-form">
+            <form action="#" className="sign-up-form form-demo">
               <h2 className="title">Sign up</h2>
               <div className="input-field">
                 <i className="fas fa-user" />
-                <input type="text" placeholder="Username" />
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  name="first_name"
+                  onChange={handleSignUpChange}
+                  value={first_name}
+                  required
+                />
+              </div>
+              <div className="input-field">
+                <i className="fas fa-user" />
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  name="last_name"
+                  onChange={handleSignUpChange}
+                  value={last_name}
+                  required
+                />
               </div>
               <div className="input-field">
                 <i className="fas fa-envelope" />
-                <input type="email" placeholder="Email" />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+                  onChange={handleSignUpChange}
+                  value={email}
+                  required
+                />
               </div>
               <div className="input-field">
                 <i className="fas fa-lock" />
-                <input type="password" placeholder="Password" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  onChange={handleSignUpChange}
+                  value={password}
+                  required
+                />
               </div>
-              <input type="submit" className="btn" value="Sign up" />
+              <div className="input-field">
+                <i className="fas fa-key" />
+                <input
+                  type="password"
+                  placeholder="Retype Password"
+                  name="re_password"
+                  onChange={handleSignUpChange}
+                  value={re_password}
+                  required
+                />
+              </div>
+              <input
+                type="submit"
+                className="btn-c"
+                value={"Sign up"}
+                onClick={handleSubmit}
+              />
             </form>
           )}
 
           {/* Forget Password form */}
           {isForgetPasswordMode && (
-            <form action="#" className="forget-password-form">
+            <form action="#" className="forget-password-form form-demo">
               <h2 className="title">Forgot Password</h2>
               <div className="input-field">
                 <i className="fas fa-envelope" />
                 <input type="email" placeholder="Enter your email" />
               </div>
-              <input type="submit" value="Reset Password" className="btn solid" />
+              <input
+                type="submit"
+                value="Reset Password"
+                className="btn-c solid"
+              />
               <p className="back-to-signin" onClick={handleSignInClick}>
                 Back to Sign in
               </p>
@@ -243,10 +360,10 @@ function LoginApp() {
             <div className="content">
               <h3>New here?</h3>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis,
-                ex ratione. Aliquid!
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Debitis, ex ratione. Aliquid!
               </p>
-              <button className="btn transparent" onClick={handleSignUpClick}>
+              <button className="btn-c transparent" onClick={handleSignUpClick}>
                 Sign up
               </button>
             </div>
@@ -259,7 +376,7 @@ function LoginApp() {
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
                 laboriosam ad deleniti.
               </p>
-              <button className="btn transparent" onClick={handleSignInClick}>
+              <button className="btn-c transparent" onClick={handleSignInClick}>
                 Sign in
               </button>
             </div>
@@ -271,4 +388,4 @@ function LoginApp() {
   );
 }
 
-export default LoginApp;
+export default Login;

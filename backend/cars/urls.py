@@ -1,21 +1,18 @@
-from django.urls import include, path
-from rest_framework.routers import DefaultRouter
-from .views import CarViewSet, CustomerViewSet, BookingViewSet, PaymentViewSet, ReviewViewSet, InsuranceViewSet, MaintenanceViewSet, LocationViewSet, create_car
+from django.urls import path
+from . import views
 
-# Create a router and register our viewsets with it.
-router = DefaultRouter()
-router.register(r'cars', CarViewSet)
-router.register(r'customers', CustomerViewSet)
-router.register(r'bookings', BookingViewSet)
-router.register(r'payments', PaymentViewSet)
-router.register(r'reviews', ReviewViewSet)
-router.register(r'insurances', InsuranceViewSet)
-router.register(r'maintenances', MaintenanceViewSet)
-router.register(r'locations', LocationViewSet)
-
-# The API URLs are now determined automatically by the router.
 urlpatterns = [
-    path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('create/', create_car)
+    path('locations/', views.LocationListCreateView.as_view(), name='location-list-create'),
+    path('cars/', views.CarListCreateView.as_view(), name='car-list-create'),
+    path('customers/', views.CustomerListCreateView.as_view(), name='customer-list-create'),
+    path('bookings/', views.BookingListCreateView.as_view(), name='booking-list-create'),
+    path('reviews/', views.ReviewListCreateView.as_view(), name='review-list-create'),
+    path('insurances/', views.InsuranceListCreateView.as_view(), name='insurance-list-create'),
+    path('maintenances/', views.MaintenanceListCreateView.as_view(), name='maintenance-list-create'),
+    path('payments/', views.PaymentListCreateView.as_view(), name='payment-list-create'),
+    path('view-locations/', views.view_locations),
+    path('get-car/', views.get_car),
+    path('available-cars/', views.available_cars, name='available_cars'),
+    path('book-car/', views.book_car, name='book_car'),
+    path('view-bookings', views.view_bookings),
 ]

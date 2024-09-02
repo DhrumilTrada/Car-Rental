@@ -1,42 +1,59 @@
 from rest_framework import serializers
-from .models import Car, Customer, Booking, Payment, Review, Insurance, Maintenance, Location
-
-class CarSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Car
-        fields = ['id', 'name', 'brand', 'model', 'type', 'year', 'price_per_day', 'kilometers_driven', 'fuel_type', 'transmission', 'image', 'availability_status', 'created_at', 'updated_at']
-
-class CustomerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = ['id', 'user', 'phone_number', 'address', 'driving_license_number', 'license_expiry_date']
-
-class BookingSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Booking
-        fields = ['id', 'customer', 'car', 'start_date', 'end_date', 'total_amount', 'booking_status', 'created_at']
-
-class PaymentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Payment
-        fields = ['id', 'booking', 'payment_date', 'payment_method', 'amount_paid', 'payment_status']
-
-class ReviewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Review
-        fields = ['id', 'car', 'customer', 'rating', 'comment', 'created_at']
-
-class InsuranceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Insurance
-        fields = ['id', 'car', 'insurance_company', 'policy_number', 'coverage_amount', 'start_date', 'end_date']
-
-class MaintenanceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Maintenance
-        fields = ['id', 'car', 'service_type', 'service_date', 'service_cost', 'notes']
+from .models import Location, Car, Customer, Booking, Review, Insurance, Maintenance, Payment
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ['id', 'name', 'address', 'contact_number']
+        fields = '__all__'
+        
+class LocationNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ['name']
+
+class CarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = '__all__'
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = '__all__'
+
+class BookingSerializer(serializers.ModelSerializer):
+    pickup_location = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Booking
+        fields = '__all__'
+
+    def get_pickup_location(self, obj):
+        return obj.car.pickup_location.name
+
+    def create(self, validated_data):
+        car = validated_data['car']
+        car.is_Available = False
+        car.save()
+        validated_data['pickup_location'] = car.pickup_location
+        return super().create(validated_data)
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
+
+class InsuranceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Insurance
+        fields = '__all__'
+
+class MaintenanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Maintenance
+        fields = '__all__'
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'
