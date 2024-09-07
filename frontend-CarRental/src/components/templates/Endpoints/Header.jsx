@@ -32,7 +32,7 @@ function Header() {
   const [loc, setLoc] = useState('')
   const [cars, setCars] = useState([])
   const today = new Date().toISOString().split("T")[0];
-  const [ex, setEx] = useState("")
+  // const [isLoading, setIsLoading] = useState(true)
 
   const fetch = async () => {
     try {
@@ -54,10 +54,16 @@ function Header() {
 
   const get_car = async() => {
     try {
-      // console.log(loc)
-      let response = (await axios.post('http://127.0.0.1:8000/get-car/', {"location" : loc}, config)).data.car
-      const names = response.map(model => model.name)
-      setCars(response.map(car => car.model))
+      if(loc != ""){
+        let response = await axios.post('http://127.0.0.1:8000/get-car/', {"location" : loc}, config)
+        const names = response.data.car
+        setCars(names.map(car => car.model))
+      }else{
+        let response = await axios.post('http://127.0.0.1:8000/get-car/')
+        const names = response.data.car
+        setCars(names.map(car => car.model))
+        console.log(cars)
+      }
       // console.log(cars)
     } catch (error) {
       console.error("Error fetching cars:", error);

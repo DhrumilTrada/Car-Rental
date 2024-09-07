@@ -1,8 +1,28 @@
 import React from "react";
 import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+
 
 function Booking() {
+  const car_id = useLocation();
+  const { carIndex } = car_id.state
+  const dispatch = useDispatch();
+  const { cars, isLoading, isError, message } = useSelector((state) => state.cars);
+
+  useEffect(() => {
+    dispatch(getCar(carIndex));
+  }, [dispatch, carIndex]);
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (isError) {
+    return <h1>{message}</h1>;
+  }
+
+  console.log(cars)
 
   return (
     <div>

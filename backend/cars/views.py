@@ -17,9 +17,18 @@ def view_locations(request):
     
 @api_view(['POST'])
 def get_car(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.data.get('location'):
         pickup = request.data.get('location')
         car = Car.objects.filter(pickup_location__name=pickup)
+        car =  CarSerializer(car, many=True)
+        return Response({'car': car.data}, status=status.HTTP_200_OK)
+    if request.method == 'POST' and request.data.get('id'):
+        car_id = request.data.get('id')
+        car = Car.objects.filter(id=car_id)
+        car =  CarSerializer(car, many=False)
+        return Response({'car': car.data}, status=status.HTTP_200_OK)
+    else:
+        car = Car.objects.all()
         car =  CarSerializer(car, many=True)
         return Response({'car': car.data}, status=status.HTTP_200_OK)
     
@@ -34,9 +43,10 @@ def available_cars(request):
         unavailable_cars = Car.objects.filter(id__in=unavailable_cars.values_list('car_id', flat=True))
         unavailable_cars = CarSerializer(unavailable_cars, many=True)
         car_serializer = CarSerializer(available_cars, many=True)
+        return Response({'available': car_serializer.data, 'unavailable': unavailable_cars.data}, status=status.HTTP_200_OK)
     else:
         car_serializer = CarSerializer(Car.objects.all(), many=True)
-    return Response({'car': car_serializer.data, 'unavailable': unavailable_cars.data}, status=status.HTTP_200_OK)
+        return Response({'available': car_serializer.data, 'unavailable': {}}, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def view_bookings(request):
@@ -65,8 +75,6 @@ def book_car(request):
     )
 
     return Response({"message": "Car booked successfully!"}, status=status.HTTP_201_CREATED)
-
-
 
 class LocationListCreateView(generics.ListCreateAPIView):
     queryset = Location.objects.all()

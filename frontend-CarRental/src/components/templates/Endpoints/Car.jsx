@@ -1,42 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link } from "react-router-dom"
+import { useDispatch, useSelector } from 'react-redux';
+import { availableAtDate, viewLocations } from '../features/cars_fetch/carSlice';
 
 function Car() {
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [cars, setCars] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [hovered, setHovered] = useState(false);
-
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  };
-
-  const fetch = async (pickup_date) => {
-    try {
-      const date1 = { pickup_date: pickup_date };
-      const response = await axios.post(
-        "http://127.0.0.1:8000/available-cars/",
-        date1,
-        config
-      );
-      const available_cars = response.data.car;
-      const unavailable_cars = response.data.unavailable;
-      setCars({ available: available_cars, unavailable: unavailable_cars });
-      setIsLoading(false);
-    } catch (error) {
-      console.log("Error fetching cars.", error);
-    }
-  };
+  const dispatch = useDispatch();
+  const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
+  const { cars, locations, isLoading, isError, message } = useSelector((state) => state.cars);
 
   useEffect(() => {
-    setDate(new Date().toISOString().split("T")[0]);
-    fetch(date);
-  }, []);
+    dispatch(viewLocations());
+    dispatch(availableAtDate(currentDate));
+  }, [dispatch, currentDate]);
 
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (isError) {
+    return <h1>{message}</h1>;
+  }
+  
   return (
     <>
       <div>
@@ -60,14 +45,17 @@ function Car() {
               Find Your Car
             </h1>
             <div className="row">
-              {!isLoading ? cars.available.map((car) => (
+              {(!isLoading && cars && cars.available && locations) ? cars.available.map((car) => (
                 <div className="col-lg-4 col-md-6 mb-2" key={car.id}>
                   <div className="rent-item mb-4">
                     <img
                       className="img-fluid mb-4"
                       src="img/car-rent-5.png"
                     />
-                    <h4 className="text-uppercase mb-4">{car.model}</h4>
+                    <h4 className="text-uppercase mb-2">{car.model}</h4>
+                    {locations.filter((loc) => loc.id === car.pickup_location)?.map((loc) => (  
+                      <h4 key={loc.id} className="text-uppercase mb-3" style={{fontSize:"12px"}}>Location: {loc.name}</h4>
+                    ))}
                     <div className="d-flex justify-content-center mb-4">
                       <div className="px-2">
                         <i className="fa fa-car text-primary mr-1" />
@@ -82,20 +70,23 @@ function Car() {
                         <span>{car.kms_driven/1000}K</span>{" "}
                       </div>
                     </div>
-                    <Link to='/bookcar' className="btn btn-primary px-3">
+                    <Link to='/booking' state={{ carIndex: car.id }}  className="btn btn-primary px-3">
                       {car.price_per_day}/Day
                     </Link>{" "}
                   </div>
                 </div>
               )) : <h1>Fetching Data</h1>}
-              {!isLoading ? cars.unavailable.map((car) => (
+              {(!isLoading && cars && cars.unavailable && locations) ? cars.unavailable.map((car) => (
                   <div className="col-lg-4 col-md-6 mb-2 unavailable" key={car.id}>
                   <div className="rent-item mb-4">
                     <img
                       className="img-fluid mb-4"
                       src="img/car-rent-5.png"
                     />
-                    <h4 className="text-uppercase mb-4 model-text">{car.model}</h4>
+                    <h4 className="text-uppercase mb-2 model-text">{car.model}</h4>
+                    {locations.filter((loc) => loc.id === car.pickup_location)?.map((loc) => (  
+                      <h4 key={loc.id} className="text-uppercase mb-3" style={{fontSize:"12px"}}>Location: {loc.name}</h4>
+                    ))}
                     <div className="d-flex justify-content-center mb-4">
                       <div className="px-2">
                         <i className="fa fa-car text-primary mr-1" />

@@ -9,7 +9,7 @@ class LocationSerializer(serializers.ModelSerializer):
 class LocationNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ['name']
+        fields = ['name', 'id']
 
 class CarSerializer(serializers.ModelSerializer):
     class Meta:
