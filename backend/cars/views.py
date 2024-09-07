@@ -24,7 +24,8 @@ def get_car(request):
         return Response({'car': car.data}, status=status.HTTP_200_OK)
     if request.method == 'POST' and request.data.get('id'):
         car_id = request.data.get('id')
-        car = Car.objects.filter(id=car_id)
+        print(car_id)
+        car = Car.objects.get(id=car_id)
         car =  CarSerializer(car, many=False)
         return Response({'car': car.data}, status=status.HTTP_200_OK)
     else:

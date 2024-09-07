@@ -1,19 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { getCar } from '../features/cars_fetch/carSlice';
 
 function Booking() {
-  const car_id = useLocation();
-  const { carIndex } = car_id.state
   const dispatch = useDispatch();
   const { cars, isLoading, isError, message } = useSelector((state) => state.cars);
-
+  const car_id = useLocation();
+  const { carIndex } = car_id.state
+  const [car, setCar] = useState({})
+  
   useEffect(() => {
-    dispatch(getCar(carIndex));
-  }, [dispatch, carIndex]);
-
+    dispatch(getCar(carIndex))
+    if(cars){
+      setCar(cars)
+    }
+  }, [])
+  
   if (isLoading) {
     return <h1>Loading...</h1>;
   }
@@ -21,12 +25,9 @@ function Booking() {
   if (isError) {
     return <h1>{message}</h1>;
   }
-
-  console.log(cars)
-
+  
   return (
     <div>
-      {/* Page Header Start */}
       <div className="container-fluid page-header">
         <h1 className="display-3 text-uppercase text-white mb-3">
           Car Booking
@@ -39,109 +40,75 @@ function Booking() {
           <h6 className="text-uppercase text-body m-0">Car Booking</h6>
         </div>
       </div>
-      {/* Page Header Start */}
-      {/* Detail Start */}
+      {((!isLoading && cars)) ? 
       <div className="container-fluid pt-5">
-        <div className="container pt-5 pb-3">
-          <h1 className="display-4 text-uppercase mb-5">Mercedes Benz R3</h1>
-          <div className="row align-items-center pb-2">
-            <div className="col-lg-6 mb-4">
-              <img className="img-fluid" src="img/bg-banner.jpg" alt="" />
-            </div>
-            <div className="col-lg-6 mb-4">
-              <h4 className="mb-2">$99.00/Day</h4>
-              <div className="d-flex mb-3">
-                <h6 className="mr-2">Rating:</h6>
-                <div className="d-flex align-items-center justify-content-center mb-1">
-                  <small className="fa fa-star text-primary mr-1" />
-                  <small className="fa fa-star text-primary mr-1" />
-                  <small className="fa fa-star text-primary mr-1" />
-                  <small className="fa fa-star text-primary mr-1" />
-                  <small className="fa fa-star-half-alt text-primary mr-1" />
-                  <small>(250)</small>
-                </div>
-              </div>
-              <p>
-                Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam
-                dolor diam ipsum et, tempor voluptua sit consetetur sit.
-                Aliquyam diam amet diam et eos sadipscing labore. Clita erat
-                ipsum et lorem et sit, sed stet no labore lorem sit. Sanctus
-                clita duo justo et tempor consetetur takimata eirmod, dolores
-                takimata consetetur invidunt
-              </p>
-              <div className="d-flex pt-1">
-                <h6>Share on:</h6>
-                <div className="d-inline-flex">
-                  <a className="px-2">
-                    <i className="fab fa-facebook-f" />
-                  </a>
-                  <a className="px-2">
-                    <i className="fab fa-twitter" />
-                  </a>
-                  <a className="px-2">
-                    <i className="fab fa-linkedin-in" />
-                  </a>
-                  <a className="px-2">
-                    <i className="fab fa-pinterest" />
-                  </a>
-                </div>
-              </div>
-            </div>
+      <div className="container pt-5 pb-3">
+        <h1 className="display-4 text-uppercase mb-5">{car.model}</h1>
+        <div className="row align-items-center pb-2">
+          <div className="col-lg-6 mb-4">
+            <img className="img-fluid" src="img/bg-banner.jpg" alt="" />
           </div>
-          <div className="row mt-n3 mt-lg-0 pb-4">
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-car text-primary mr-2" />
-              <span>Model: 2015</span>
+          <div className="col-lg-6 mb-4">
+            <h4 className="mb-2">{car.price_per_day}/Day</h4>
+            <div className="d-flex mb-3">
+              <h6 className="mr-2">Rating:</h6>
+              <div className="d-flex align-items-center justify-content-center mb-1">
+                <small className="fa fa-star text-primary mr-1" />
+                <small className="fa fa-star text-primary mr-1" />
+                <small className="fa fa-star text-primary mr-1" />
+                <small className="fa fa-star text-primary mr-1" />
+                <small className="fa fa-star-half-alt text-primary mr-1" />
+                <small>(250)</small>
+              </div>
             </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-cogs text-primary mr-2" />
-              <span>Automatic</span>
-            </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-road text-primary mr-2" />
-              <span>20km/liter</span>
-            </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-eye text-primary mr-2" />
-              <span>GPS Navigation</span>
-            </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-car text-primary mr-2" />
-              <span>Model: 2015</span>
-            </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-cogs text-primary mr-2" />
-              <span>Automatic</span>
-            </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-road text-primary mr-2" />
-              <span>20km/liter</span>
-            </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-eye text-primary mr-2" />
-              <span>GPS Navigation</span>
-            </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-car text-primary mr-2" />
-              <span>Model: 2015</span>
-            </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-cogs text-primary mr-2" />
-              <span>Automatic</span>
-            </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-road text-primary mr-2" />
-              <span>20km/liter</span>
-            </div>
-            <div className="col-md-3 col-6 mb-2">
-              <i className="fa fa-eye text-primary mr-2" />
-              <span>GPS Navigation</span>
+            <p>
+              Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam
+              dolor diam ipsum et, tempor voluptua sit consetetur sit.
+              Aliquyam diam amet diam et eos sadipscing labore. Clita erat
+              ipsum et lorem et sit, sed stet no labore lorem sit. Sanctus
+              clita duo justo et tempor consetetur takimata eirmod, dolores
+              takimata consetetur invidunt
+            </p>
+            <div className="d-flex pt-1">
+              <h6>Share on:</h6>
+              <div className="d-inline-flex">
+                <a className="px-2">
+                  <i className="fab fa-facebook-f" />
+                </a>
+                <a className="px-2">
+                  <i className="fab fa-twitter" />
+                </a>
+                <a className="px-2">
+                  <i className="fab fa-linkedin-in" />
+                </a>
+                <a className="px-2">
+                  <i className="fab fa-pinterest" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
+        <div className="row mt-n3 mt-lg-0 pb-4">
+          <div className="col-md-3 col-6 mb-2">
+            <i className="fa fa-car text-primary mr-2" />
+            <span>{car.year}</span>
+          </div>
+          <div className="col-md-3 col-6 mb-2">
+            <i className="fa fa-cogs text-primary mr-2" />
+            <span>{car.transmission}</span>
+          </div>
+          <div className="col-md-3 col-6 mb-2">
+            <i className="fa fa-road text-primary mr-2" />
+            <span>20km/liter</span>
+          </div>
+          <div className="col-md-3 col-6 mb-2">
+            <i className="fa fa-eye text-primary mr-2" />
+            <span>GPS Navigation</span>
+          </div>
+        </div>
       </div>
-      {/* Detail End */}
-      {/* Car Booking Start */}
+    </div>
+    : <h1>Loading</h1>}
       <div className="container-fluid pb-5">
         <div className="container">
           <div className="row">
@@ -193,7 +160,7 @@ function Booking() {
                       className="custom-select px-4"
                       style={{ height: "50px" }}
                     >
-                      <option selected>Pickup Location</option>
+                      <option defaultValue>Pickup Location</option>
                       <option value={1}>Location 1</option>
                       <option value={2}>Location 2</option>
                       <option value={3}>Location 3</option>
@@ -204,7 +171,7 @@ function Booking() {
                       className="custom-select px-4"
                       style={{ height: "50px" }}
                     >
-                      <option selected>Drop Location</option>
+                      <option defaultValue>Drop Location</option>
                       <option value={1}>Location 1</option>
                       <option value={2}>Location 2</option>
                       <option value={3}>Location 3</option>
@@ -249,7 +216,7 @@ function Booking() {
                       className="custom-select px-4"
                       style={{ height: "50px" }}
                     >
-                      <option selected>Select Adult</option>
+                      <option defaultValue>Select Adult</option>
                       <option value={1}>Adult 1</option>
                       <option value={2}>Adult 2</option>
                       <option value={3}>Adult 3</option>
@@ -260,7 +227,7 @@ function Booking() {
                       className="custom-select px-4"
                       style={{ height: "50px" }}
                     >
-                      <option selected>Select Child</option>
+                      <option defaultValue>Select Child</option>
                       <option value={1}>Child 1</option>
                       <option value={2}>Child 2</option>
                       <option value={3}>Child 3</option>
@@ -334,15 +301,11 @@ function Booking() {
           </div>
         </div>
       </div>
-      {/* Car Booking End */}
-      {/* Vendor Start */}
       <div className="container-fluid py-5">
         <div className="container py-5">
         <Carousel />
         </div>
       </div>
-      {/* Vendor End */}
-      {/* Back to Top */}
       <button
         onClick={handleScrollToTop}
         className="btn btn-lg btn-primary btn-lg-square back-to-top"

@@ -32,7 +32,6 @@ function Header() {
   const [loc, setLoc] = useState('')
   const [cars, setCars] = useState([])
   const today = new Date().toISOString().split("T")[0];
-  // const [isLoading, setIsLoading] = useState(true)
 
   const fetch = async () => {
     try {

@@ -27,9 +27,9 @@ const availableAtDate = async (pickup_date) => {
     return response.data;
 }
 
-const getCar = async (param) => {
-    const response = await axios.post(GET_CAR, {"id": param}, config)
-    return response.data
+const getCar = async (id) => {
+    const response = await axios.post(GET_CAR, {"id": id}, config)
+    return response.data.car;
 }
 
 export const locService = { viewLocations }
