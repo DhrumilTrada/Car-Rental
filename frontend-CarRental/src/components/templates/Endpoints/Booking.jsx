@@ -2,21 +2,27 @@ import React, { useEffect, useState } from "react";
 import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCar } from '../features/cars_fetch/carSlice';
+import { getCar, reset } from '../features/cars_fetch/carSlice';
 
 function Booking() {
   const dispatch = useDispatch();
-  const { cars, isLoading, isError, message } = useSelector((state) => state.cars);
+  const { carById, isLoading, isError, message } = useSelector((state) => state.cars);
   const car_id = useLocation();
   const { carIndex } = car_id.state
-  const [car, setCar] = useState({})
-  
+  const [car, setCar] = useState({})  
+
   useEffect(() => {
-    dispatch(getCar(carIndex))
-    if(cars){
-      setCar(cars)
+    if(carById){
+      dispatch(reset())
     }
+    dispatch(getCar(carIndex))
   }, [])
+
+  useEffect(() => {
+    if (carById) {
+      setCar(carById)
+    }
+  }, [dispatch, carById])
   
   if (isLoading) {
     return <h1>Loading...</h1>;
@@ -25,7 +31,7 @@ function Booking() {
   if (isError) {
     return <h1>{message}</h1>;
   }
-  
+  console.log(carById)
   return (
     <div>
       <div className="container-fluid page-header">
@@ -40,7 +46,7 @@ function Booking() {
           <h6 className="text-uppercase text-body m-0">Car Booking</h6>
         </div>
       </div>
-      {((!isLoading && cars)) ? 
+      {((!isLoading && car)) ? 
       <div className="container-fluid pt-5">
       <div className="container pt-5 pb-3">
         <h1 className="display-4 text-uppercase mb-5">{car.model}</h1>

@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import DatePickerC from "../React UI/DatePicker";
 import TimePickerC from "../React UI/TimePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
-import axios from "axios";
+import { availableCar, availableCars, viewLocations } from '../features/cars_fetch/carSlice';
 import { jwtDecode } from "jwt-decode";
-
-// import { toast } from "react-toastify";
 
 function Header() {
   const user = localStorage.getItem("user");
@@ -16,62 +14,34 @@ function Header() {
     const user_id = jwtDecode(access)['user_id']
   }
   const location = useLocation();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [time, setTime] = useState(
-    new Date().toISOString().split("T")[1].substring(0, 5)
-  );
-
-  const config = {
-    headers : {
-      "Content-Type": "application/json",
-    }
-  }
-
-  const [locations, setLocations] = useState([]);
+  const [time, setTime] = useState(new Date().toISOString().split("T")[1].substring(0, 5));
+  const [locations_state, setLocationsState] = useState([]);
   const [loc, setLoc] = useState('')
-  const [cars, setCars] = useState([])
+  const [cars_state, setCarsState] = useState([])
   const today = new Date().toISOString().split("T")[0];
-
-  const fetch = async () => {
-    try {
-      let response = await axios.get("http://127.0.0.1:8000/view-locations");
-      const locs = response.data.locations;
-      const locationNames = locs.map((location) => location.name);
-      setLocations(locationNames);
-    } catch (error) {
-      console.error("Error fetching locations:", error);
-    }
-  };
+  const { carsAtLocation, locations, isLoading, isError, message } = useSelector((state) => state.cars);
+        
+  useEffect(() => {
+    setDate("")
+    setTime("")
+    dispatch(viewLocations())
+    dispatch(availableCar())
+  }, [])
 
   useEffect(() => {
-    setDate("");
-    setTime("");
-    fetch();
-
-  }, []);
-
-  const get_car = async() => {
-    try {
-      if(loc != ""){
-        let response = await axios.post('http://127.0.0.1:8000/get-car/', {"location" : loc}, config)
-        const names = response.data.car
-        setCars(names.map(car => car.model))
-      }else{
-        let response = await axios.post('http://127.0.0.1:8000/get-car/')
-        const names = response.data.car
-        setCars(names.map(car => car.model))
-        console.log(cars)
-      }
-      // console.log(cars)
-    } catch (error) {
-      console.error("Error fetching cars:", error);
-    }
-  }
-
-  useEffect(() => {
-    get_car();
+    dispatch(availableCars(loc))
   }, [loc])
+
+  useEffect(() => {
+    if(locations && carsAtLocation){
+      setLocationsState(locations.map((locations) => locations.name))
+      setCarsState(carsAtLocation.map((cars) => cars.model))
+    }
+  }, [carsAtLocation, locations])
+
   const isCarsActive =
     location.pathname === "/car_display" ||
     location.pathname === "/details" ||
@@ -88,7 +58,6 @@ function Header() {
     }
   };
 
-  const dispatch = useDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
@@ -292,7 +261,7 @@ function Header() {
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <select className="custom-select px-4" style={{ height: "40px" }} onChange={(e) => setLoc(e.target.value)}>
               <option value="">Pickup Location</option>
-              {locations.map((location, index) => (
+              {locations_state.map((location, index) => (
                 <option key={index} value={location}>
                   {location}
                 </option>
@@ -316,7 +285,7 @@ function Header() {
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <select className="custom-select px-4" style={{ height: "40px" }}>
               <option defaultValue>Select A Car</option>
-              {cars.map((car, index) => (
+              {cars_state.map((car, index) => (
                 <option key={index} value={car}>
                   {car}
                 </option>

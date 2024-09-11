@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
-import { availableAtDate, viewLocations } from '../features/cars_fetch/carSlice';
+import { availableAtDate, viewLocations, reset } from '../features/cars_fetch/carSlice';
 
 function Car() {
   const dispatch = useDispatch();
   const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
-  const { cars, locations, isLoading, isError, message } = useSelector((state) => state.cars);
+  const { carsAtDate, locations, isLoading, isError, message } = useSelector((state) => state.cars);
 
   useEffect(() => {
     dispatch(viewLocations());
@@ -45,7 +45,7 @@ function Car() {
               Find Your Car
             </h1>
             <div className="row">
-              {(!isLoading && cars && cars.available && locations) ? cars.available.map((car) => (
+              {(!isLoading && carsAtDate && carsAtDate.available && locations) ? carsAtDate.available.map((car) => (
                 <div className="col-lg-4 col-md-6 mb-2" key={car.id}>
                   <div className="rent-item mb-4">
                     <img
@@ -76,7 +76,7 @@ function Car() {
                   </div>
                 </div>
               )) : <h1>Fetching Data</h1>}
-              {(!isLoading && cars && cars.unavailable && locations) ? cars.unavailable.map((car) => (
+              {(!isLoading && carsAtDate && carsAtDate.unavailable && locations) ? carsAtDate.unavailable.map((car) => (
                   <div className="col-lg-4 col-md-6 mb-2 unavailable" key={car.id}>
                   <div className="rent-item mb-4">
                     <img

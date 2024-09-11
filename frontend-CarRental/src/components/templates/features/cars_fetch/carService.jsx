@@ -19,7 +19,12 @@ const viewLocations = async () => {
 
 const availableCars = async (location) => {
     const response = await axios.post(GET_CAR_AT_LOCATION, {"location" : location}, config)
-    return response.data.locations;
+    return response.data.car;
+}
+
+const availableCar = async () => {
+    const response = await axios.post(GET_CAR_AT_LOCATION)
+    return response.data.car;
 }
 
 const availableAtDate = async (pickup_date) => {
@@ -33,4 +38,4 @@ const getCar = async (id) => {
 }
 
 export const locService = { viewLocations }
-export const carService = { availableCars, availableAtDate, getCar }
+export const carService = { availableCars, availableAtDate, getCar, availableCar }

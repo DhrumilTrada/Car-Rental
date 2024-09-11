@@ -2,7 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { carService, locService } from "./carService";
 
 const initialState = {
-  cars: null,
+  carsAtLocation: null,
+  carById: null,
+  carsAtDate: null,
   locations: null,
   isLoading: false,
   isSuccess: false,
@@ -45,6 +47,21 @@ export const availableCars = createAsyncThunk(
   async (location, thunkApi) => {
     try {
       return await carService.availableCars(location);
+    } catch (error) {
+      let message = 
+        (error.response && error.response.data && error.response.data.message) || 
+        error.message || 
+        error.toString();
+      return thunkApi.rejectWithValue(message);
+    }
+  }
+);
+
+export const availableCar = createAsyncThunk(
+  "cars/carAtAllLocations",
+  async (location, thunkApi) => {
+    try {
+      return await carService.availableCar();
     } catch (error) {
       let message = 
         (error.response && error.response.data && error.response.data.message) || 
@@ -102,7 +119,7 @@ export const carSlice = createSlice({
       .addCase(availableAtDate.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.cars = action.payload;
+        state.carsAtDate = action.payload;
       })
       .addCase(availableAtDate.rejected, (state, action) => {
         state.isLoading = false;
@@ -115,9 +132,22 @@ export const carSlice = createSlice({
       .addCase(availableCars.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.cars = action.payload;
+        state.carsAtLocation = action.payload;
       })
       .addCase(availableCars.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(availableCar.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(availableCar.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.carsAtLocation = action.payload;
+      })
+      .addCase(availableCar.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -128,7 +158,7 @@ export const carSlice = createSlice({
       .addCase(getCar.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.cars = action.payload;
+        state.carById = action.payload;
       })
       .addCase(getCar.rejected, (state, action) => {
         state.isLoading = false;
