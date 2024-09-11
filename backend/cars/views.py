@@ -87,8 +87,12 @@ class CarListCreateView(generics.ListCreateAPIView):
     serializer_class = CarSerializer
 
 class CustomerListCreateView(generics.ListCreateAPIView):
-    queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    def get_queryset(self):
+        return Customer.objects.filter(user=self.request.user, user__is_active=True)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class BookingListCreateView(generics.ListCreateAPIView):
     queryset = Booking.objects.all()
