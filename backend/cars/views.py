@@ -3,6 +3,7 @@ from rest_framework import status, generics
 from rest_framework.response import Response
 from datetime import date
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from .models import Location, Car, Customer, Booking, Review, Insurance, Maintenance, Payment
 from .serializers import LocationSerializer, CarSerializer, CustomerSerializer, BookingSerializer, ReviewSerializer, InsuranceSerializer, MaintenanceSerializer, PaymentSerializer, LocationNameSerializer
 
@@ -15,7 +16,7 @@ def view_locations(request):
         locations = LocationNameSerializer(locations, many=True)
         return Response({'locations': locations.data}, status=status.HTTP_200_OK)
     
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 def get_car(request):
     if request.method == 'POST' and request.data.get('location'):
         pickup = request.data.get('location')
@@ -67,7 +68,6 @@ def book_car(request):
     current_date = date.today()
     end_date = parse_date(request.data.get('pickup_date'))
 
-    # Create a new booking
     booking = Booking.objects.create(
         user=user,
         car_id=car_id,
@@ -76,6 +76,19 @@ def book_car(request):
     )
 
     return Response({"message": "Car booked successfully!"}, status=status.HTTP_201_CREATED)
+
+class CreateBookingView(APIView):
+    def post(self, request):
+        data = request.data
+        
+        # Validate and create the Booking using the serializer
+        serializer = BookingSerializer(data=data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Booking created successfully!"}, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LocationListCreateView(generics.ListCreateAPIView):
     queryset = Location.objects.all()

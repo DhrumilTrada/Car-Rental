@@ -13,7 +13,7 @@ class CarAdmin(admin.ModelAdmin):
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('user', 'phone_number', 'address', 'driving_license_number', 'license_expiry_date')
+    list_display = ('id', 'user', 'phone_number', 'address', 'driving_license_number', 'license_expiry_date')
     search_fields = ('user__username', 'phone_number')
 
 @admin.register(Booking)

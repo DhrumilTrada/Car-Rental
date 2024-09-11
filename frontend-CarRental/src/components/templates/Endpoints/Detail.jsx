@@ -1,43 +1,32 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import RelatedCarousel from "../Carousels/RelatedCarousel";
 import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { allCarsDisplay } from "../features/cars_fetch/carSlice";
 
 function Detail() {
-  const carItems = [
-    {
-      imgSrc: "img/car-rent-1.png",
-      model: "Mercedes Benz R3",
-      year: "2015",
-      transmission: "AUTO",
-      mileage: "25K",
-      price: "$99.00",
-    },
-    {
-      imgSrc: "img/car-rent-2.png",
-      model: "BMW X5",
-      year: "2018",
-      transmission: "AUTO",
-      mileage: "30K",
-      price: "$120.00",
-    },
-    {
-      imgSrc: "img/car-rent-3.png",
-      model: "Audi A6",
-      year: "2017",
-      transmission: "MANUAL",
-      mileage: "20K",
-      price: "$110.00",
-    },
-    {
-      imgSrc: "img/car-rent-4.png",
-      model: "Tesla Model S",
-      year: "2020",
-      transmission: "AUTO",
-      mileage: "15K",
-      price: "$150.00",
-    },
-  ];
+  const carItems = [];
+  const dispatch = useDispatch();
+  const { allCars, isLoading, isError, message } = useSelector((state) => state.cars);
+
+  useEffect(() => {
+    dispatch(allCarsDisplay());
+  }, [dispatch])
+
+  if(allCars){
+    allCars.map((cars) => {
+      const item = {
+        imgSrc: "img/car-rent-1.png",
+        model: cars.model,
+        year: cars.year,
+        transmission: cars.transmission,
+        mileage: (cars.kms_driven/1000)+"K",
+        price: cars.price_per_day,
+      }
+      carItems.push(item)
+    })
+  }
 
   const carouselOptions = {
     loop: true,
@@ -71,7 +60,6 @@ function Detail() {
 
   return (
     <div>
-      {/* Page Header Start */}
       <div className="container-fluid page-header">
         <h1 className="display-3 text-uppercase text-white mb-3">Car Detail</h1>
         <div className="d-inline-flex text-white">
@@ -82,8 +70,6 @@ function Detail() {
           <h6 className="text-uppercase text-body m-0">Car Detail</h6>
         </div>
       </div>
-      {/* Page Header Start */}
-      {/* Detail Start */}
       <div className="container-fluid pt-5">
         <div className="container pt-5">
           <div className="row">
@@ -261,8 +247,6 @@ function Detail() {
           </div>
         </div>
       </div>
-      {/* Detail End */}
-      {/* Related Car Start */}
       <div className="container-fluid pb-5">
         <div className="container pb-5">
           <h2 className="mb-4">Related Cars</h2>
@@ -272,15 +256,11 @@ function Detail() {
           />
         </div>
       </div>
-      {/* Related Car End */}
-      {/* Vendor Start */}
       <div className="container-fluid py-5">
         <div className="container">
           <Carousel />
         </div>
       </div>
-      {/* Vendor End */}
-      {/* Back to Top */}
       <button
         onClick={handleScrollToTop}
         className="btn btn-lg btn-primary btn-lg-square back-to-top"

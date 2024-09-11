@@ -5,6 +5,7 @@ const initialState = {
   carsAtLocation: null,
   carById: null,
   carsAtDate: null,
+  allCars: null,
   locations: null,
   isLoading: false,
   isSuccess: false,
@@ -17,6 +18,21 @@ export const viewLocations = createAsyncThunk(
   async (thunkApi) => {
     try {
       return await locService.viewLocations();
+    } catch (error) {
+      let message = 
+        (error.response && error.response.data && error.response.data.message) || 
+        error.message || 
+        error.toString();
+      return thunkApi.rejectWithValue(message);
+    }
+  }
+);
+
+export const allCarsDisplay = createAsyncThunk(
+  "cars/allcars",
+  async (thunkApi) => {
+    try {
+      return await carService.allCarsDisplay();
     } catch (error) {
       let message = 
         (error.response && error.response.data && error.response.data.message) || 
@@ -109,6 +125,19 @@ export const carSlice = createSlice({
         state.locations = action.payload;
       })
       .addCase(viewLocations.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(allCarsDisplay.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(allCarsDisplay.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.allCars= action.payload;
+      })
+      .addCase(allCarsDisplay.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

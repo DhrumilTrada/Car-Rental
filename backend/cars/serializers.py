@@ -22,7 +22,7 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class BookingSerializer(serializers.ModelSerializer):
-    pickup_location = serializers.SerializerMethodField()
+    pickup_location = serializers.ReadOnlyField()
 
     class Meta:
         model = Booking
@@ -30,13 +30,6 @@ class BookingSerializer(serializers.ModelSerializer):
 
     def get_pickup_location(self, obj):
         return obj.car.pickup_location.name
-
-    def create(self, validated_data):
-        car = validated_data['car']
-        car.is_Available = False
-        car.save()
-        validated_data['pickup_location'] = car.pickup_location
-        return super().create(validated_data)
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
