@@ -138,38 +138,6 @@ function Detail() {
                   <i className="fa fa-eye text-primary mr-2" />
                   <span>GPS Navigation</span>
                 </div>
-                <div className="col-md-3 col-6 mb-2">
-                  <i className="fa fa-car text-primary mr-2" />
-                  <span>Model: 2015</span>
-                </div>
-                <div className="col-md-3 col-6 mb-2">
-                  <i className="fa fa-cogs text-primary mr-2" />
-                  <span>Automatic</span>
-                </div>
-                <div className="col-md-3 col-6 mb-2">
-                  <i className="fa fa-road text-primary mr-2" />
-                  <span>20km/liter</span>
-                </div>
-                <div className="col-md-3 col-6 mb-2">
-                  <i className="fa fa-eye text-primary mr-2" />
-                  <span>GPS Navigation</span>
-                </div>
-                <div className="col-md-3 col-6 mb-2">
-                  <i className="fa fa-car text-primary mr-2" />
-                  <span>Model: 2015</span>
-                </div>
-                <div className="col-md-3 col-6 mb-2">
-                  <i className="fa fa-cogs text-primary mr-2" />
-                  <span>Automatic</span>
-                </div>
-                <div className="col-md-3 col-6 mb-2">
-                  <i className="fa fa-road text-primary mr-2" />
-                  <span>20km/liter</span>
-                </div>
-                <div className="col-md-3 col-6 mb-2">
-                  <i className="fa fa-eye text-primary mr-2" />
-                  <span>GPS Navigation</span>
-                </div>
               </div>
             </div>
             <div className="col-lg-4 mb-5">
