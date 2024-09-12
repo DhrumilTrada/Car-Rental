@@ -2,8 +2,10 @@ from django.utils.dateparse import parse_date
 from rest_framework import status, generics
 from rest_framework.response import Response
 from datetime import date
+from rest_framework import serializers
 from rest_framework.decorators import api_view
-from rest_framework.views import APIView
+from django.utils import timezone
+
 from .models import Location, Car, Customer, Booking, Review, Insurance, Maintenance, Payment
 from .serializers import LocationSerializer, CarSerializer, CustomerSerializer, BookingSerializer, ReviewSerializer, InsuranceSerializer, MaintenanceSerializer, PaymentSerializer, LocationNameSerializer
 
@@ -35,7 +37,7 @@ def get_car(request): # get cars by location, id or all
 @api_view(['POST'])
 def available_cars(request): # at a given date
     current_date = date.today()
-    print(current_date)
+    print(request.headers.get("Authorization"))
     date_provided = parse_date(request.data.get('pickup_date'))
     unavailable_cars = Booking.objects.filter(end_date__gte=date_provided)
     if unavailable_cars:
@@ -70,7 +72,6 @@ def book_car(request):
 class LocationListCreateView(generics.ListCreateAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
-    
 
 class CarListCreateView(generics.ListCreateAPIView):
     queryset = Car.objects.all()
@@ -91,6 +92,15 @@ class BookingListCreateView(generics.ListCreateAPIView):
 class ReviewListCreateView(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+
+    def perform_create(self, serializer):
+        customer = self.request.user.customer
+        car = serializer.validated_data.get('car')
+
+        if not Booking.objects.filter(customer=customer, car=car, end_date__lt=timezone.now()).exists():
+            raise serializers.ValidationError("You can only review cars you have previously booked.")
+        
+        serializer.save(customer=customer)
 
 class InsuranceListCreateView(generics.ListCreateAPIView):
     queryset = Insurance.objects.all()

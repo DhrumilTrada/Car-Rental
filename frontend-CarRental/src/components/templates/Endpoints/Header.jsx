@@ -16,8 +16,14 @@ function Header() {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const [time, setTime] = useState(new Date().toISOString().split("T")[1].substring(0, 5));
+  const currentDate = new Date();
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const [date, setDate] = useState(`${year}-${month}-${day}`);
+  const [time, setTime] = useState(`${hours}:${minutes}`);
   const [locations_state, setLocationsState] = useState([]);
   const [loc, setLoc] = useState('')
   const [cars_state, setCarsState] = useState([])

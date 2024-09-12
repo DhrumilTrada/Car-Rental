@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import RelatedCarousel from "../Carousels/RelatedCarousel";
 import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link, useLocation } from 'react-router-dom';
@@ -34,8 +34,16 @@ function Detail() {
         }
       }
     }
-    handleScrollToTop()
   }, [cars, allCars])
+
+  const location = useLocation();
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (location.state?.scrollTo && sectionRef.current) {
+      sectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
 
   if(allCars){
     allCars.map((cars) => {
@@ -71,8 +79,6 @@ function Detail() {
     },
   };
 
-  const [date, setDate] = useState(new Date());
-  const [time, setTime] = useState(new Date());
   const today = new Date().toISOString().split("T")[0];
   const getCurrentTime = () => {
     const now = new Date();
@@ -81,6 +87,14 @@ function Detail() {
     return `${hours}:${minutes}`;
   };
   const currentTime = getCurrentTime();
+  const currentDate = new Date();
+  const hours = String(currentDate.getHours()).padStart(2, '0');
+  const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+  const day = String(currentDate.getDate()).padStart(2, '0');
+  const [date, setDate] = useState(`${year}-${month}-${day}`);
+  const [time, setTime] = useState(`${hours}:${minutes}`);
 
   return (
     <div>
@@ -94,7 +108,7 @@ function Detail() {
           <h6 className="text-uppercase text-body m-0">Car Detail</h6>
         </div>
       </div>
-      <div className="container-fluid pt-5">
+      <div className="container-fluid pt-5" id="main-container" ref={sectionRef}>
         <div className="container pt-5">
           <div className="row">
             <div className="col-lg-8 mb-5">
@@ -234,13 +248,14 @@ function Detail() {
         </div>
       </div>
       <div className="container-fluid pb-5">
+        {(!isLoading && allCars) ? 
         <div className="container pb-5">
-          <h2 className="mb-4">Related Cars</h2>
-          <RelatedCarousel
-            carItems={carItems}
-            carouselOptions={carouselOptions}
-          />
-        </div>
+        <h2 className="mb-4">Related Cars</h2>
+        <RelatedCarousel
+          carItems={carItems}
+          carouselOptions={carouselOptions}
+        />
+      </div> : <h1>Loading....</h1> }
       </div>
       <div className="container-fluid py-5">
         <div className="container">

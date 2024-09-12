@@ -7,10 +7,6 @@ import '../../css/style.css'
 
 const RelatedCarousel = ({ carItems, carouselOptions, onCarouselButtonClick }) => {
 
-  const handleClick = () => {
-    onCarouselButtonClick("This is data from Carousel");
-  };
-
   return (
     <div className="related-carousel position-relative" style={{ padding: '0 30px' }}>
       <OwlCarousel className="owl-theme" {...carouselOptions}>
