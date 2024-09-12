@@ -1,25 +1,44 @@
 import React, { useState, useEffect } from "react";
 import RelatedCarousel from "../Carousels/RelatedCarousel";
 import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { allCarsDisplay } from "../features/cars_fetch/carSlice";
+import { all } from "axios";
 
 function Detail() {
   const carItems = [];
+  const [car, setCar] = useState({})
   const dispatch = useDispatch();
   const { allCars, isLoading, isError, message } = useSelector((state) => state.cars);
+  const carId = useLocation();
+  const { cars } = carId.state || {};
 
   const fetch = () => {
     dispatch(allCarsDisplay());
   }
 
   useEffect(() => {
-    fetch()
+    fetch()    
   }, [])
 
+  useEffect(() => {
+    if(allCars){
+      if(!cars){
+        setCar(allCars[0])
+      }else{
+        const car_data = allCars.filter((car) => {
+          if(car.id == cars){
+            return car
+          }
+        })
+        setCar(car_data[0])
+      }
+    }
+    handleScrollToTop()
+  }, [cars])
+
   if(allCars){
-    console.log(allCars)
     allCars.map((cars) => {
       const item = {
         imgSrc: "img/car-rent-1.png",
@@ -28,6 +47,7 @@ function Detail() {
         transmission: cars.transmission,
         mileage: (cars.kms_driven/1000)+"K",
         price: cars.price_per_day,
+        id: cars.id
       }
       carItems.push(item)
     })
@@ -80,7 +100,7 @@ function Detail() {
           <div className="row">
             <div className="col-lg-8 mb-5">
               <h1 className="display-4 text-uppercase mb-5">
-                Mercedes Benz R3
+                {car.model}
               </h1>
               <div className="row mx-n2 mb-3">
                 <div className="col-md-3 col-6 px-2 pb-2">
@@ -124,11 +144,11 @@ function Detail() {
               <div className="row pt-2">
                 <div className="col-md-3 col-6 mb-2">
                   <i className="fa fa-car text-primary mr-2" />
-                  <span>Model: 2015</span>
+                  <span>Model: {car.year}</span>
                 </div>
                 <div className="col-md-3 col-6 mb-2">
                   <i className="fa fa-cogs text-primary mr-2" />
-                  <span>Automatic</span>
+                  <span>{car.transmission}</span>
                 </div>
                 <div className="col-md-3 col-6 mb-2">
                   <i className="fa fa-road text-primary mr-2" />

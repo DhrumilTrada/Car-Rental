@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const RentItem = ({ imgSrc, model, year, transmission, mileage, price }) => {
+const RentItem = ({ imgSrc, model, year, transmission, mileage, price, cars }) => {
   return (
     <div className="rent-item">
       <img className="img-fluid mb-4" src={imgSrc} alt={model} />
@@ -20,7 +20,7 @@ const RentItem = ({ imgSrc, model, year, transmission, mileage, price }) => {
           <span>{mileage}</span>
         </div>
       </div>
-      <Link className="btn btn-primary px-3" href="#">
+      <Link className="btn btn-primary px-3" state={{ cars }}>
         {price}/Day
       </Link>
     </div>
