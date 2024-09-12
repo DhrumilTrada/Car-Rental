@@ -22,14 +22,15 @@ class CustomerSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class BookingSerializer(serializers.ModelSerializer):
-    pickup_location = serializers.ReadOnlyField()
+    pickup_location = serializers.SerializerMethodField()
 
     class Meta:
         model = Booking
         fields = '__all__'
 
     def get_pickup_location(self, obj):
-        return obj.car.pickup_location.name
+        return obj.car.pickup_location.name if obj.car.pickup_location else None
+
 
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:

@@ -16,27 +16,26 @@ function Detail() {
 
   const fetch = () => {
     dispatch(allCarsDisplay());
+    console.log(cars)
   }
 
   useEffect(() => {
     fetch()    
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if(allCars){
       if(!cars){
         setCar(allCars[0])
       }else{
-        const car_data = allCars.filter((car) => {
-          if(car.id == cars){
-            return car
-          }
-        })
-        setCar(car_data[0])
+        const selectedCar = allCars.find((car) => car.id === cars);
+        if (selectedCar) {
+          setCar(selectedCar);
+        }
       }
     }
     handleScrollToTop()
-  }, [cars])
+  }, [cars, allCars])
 
   if(allCars){
     allCars.map((cars) => {
@@ -133,13 +132,7 @@ function Detail() {
                 </div>
               </div>
               <p>
-                Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam
-                dolor diam ipsum et, tempor voluptua sit consetetur sit.
-                Aliquyam diam amet diam et eos sadipscing labore. Clita erat
-                ipsum et lorem et sit, sed stet no labore lorem sit. Sanctus
-                clita duo justo et tempor consetetur takimata eirmod, dolores
-                takimata consetetur invidunt magna dolores aliquyam dolores
-                dolore. Amet erat amet et magna
+                {car.description}
               </p>
               <div className="row pt-2">
                 <div className="col-md-3 col-6 mb-2">
@@ -152,7 +145,7 @@ function Detail() {
                 </div>
                 <div className="col-md-3 col-6 mb-2">
                   <i className="fa fa-road text-primary mr-2" />
-                  <span>20km/liter</span>
+                  <span>{car.mileage}km/liter</span>
                 </div>
                 <div className="col-md-3 col-6 mb-2">
                   <i className="fa fa-eye text-primary mr-2" />

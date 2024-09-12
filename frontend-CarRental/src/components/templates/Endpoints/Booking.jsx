@@ -68,12 +68,7 @@ function Booking() {
               </div>
             </div>
             <p>
-              Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam
-              dolor diam ipsum et, tempor voluptua sit consetetur sit.
-              Aliquyam diam amet diam et eos sadipscing labore. Clita erat
-              ipsum et lorem et sit, sed stet no labore lorem sit. Sanctus
-              clita duo justo et tempor consetetur takimata eirmod, dolores
-              takimata consetetur invidunt
+              {car.description}
             </p>
             <div className="d-flex pt-1">
               <h6>Share on:</h6>
@@ -105,7 +100,7 @@ function Booking() {
           </div>
           <div className="col-md-3 col-6 mb-2">
             <i className="fa fa-road text-primary mr-2" />
-            <span>20km/liter</span>
+            <span>{car.mileage}km/liter</span>
           </div>
           <div className="col-md-3 col-6 mb-2">
             <i className="fa fa-eye text-primary mr-2" />

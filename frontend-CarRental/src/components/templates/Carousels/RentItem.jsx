@@ -20,7 +20,7 @@ const RentItem = ({ imgSrc, model, year, transmission, mileage, price, cars }) =
           <span>{mileage}</span>
         </div>
       </div>
-      <Link className="btn btn-primary px-3" state={{ cars }}>
+      <Link className="btn btn-primary px-3" state={{ cars }} to="#">
         {price}/Day
       </Link>
     </div>

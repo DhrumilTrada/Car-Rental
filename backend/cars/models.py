@@ -47,6 +47,8 @@ class Car(models.Model):
     model = models.CharField(max_length=100)
     year = models.PositiveIntegerField()
     kms_driven = models.PositiveBigIntegerField()
+    description = models.TextField(blank=True)
+    mileage = models.DecimalField(decimal_places=2, null=True, max_digits=4)
     price_per_day = models.DecimalField(max_digits=10, decimal_places=2)
     type = models.CharField(max_length=50, choices=TYPE_CHOICES)
     fuel_type = models.CharField(max_length=50, choices=FUEL_TYPE_CHOICES)

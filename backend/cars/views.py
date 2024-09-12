@@ -7,17 +7,15 @@ from rest_framework.views import APIView
 from .models import Location, Car, Customer, Booking, Review, Insurance, Maintenance, Payment
 from .serializers import LocationSerializer, CarSerializer, CustomerSerializer, BookingSerializer, ReviewSerializer, InsuranceSerializer, MaintenanceSerializer, PaymentSerializer, LocationNameSerializer
 
-
-
 @api_view(['GET'])
-def view_locations(request):
+def view_locations(request): # view locations with name and id using LocationNameSerializer
     if request.method == 'GET':
-        locations = Location.objects.all()
-        locations = LocationNameSerializer(locations, many=True)
+        locations = Location.objects.all() # model objects
+        locations = LocationNameSerializer(locations, many=True) # convert model object -> dictionary
         return Response({'locations': locations.data}, status=status.HTTP_200_OK)
     
 @api_view(['GET', 'POST'])
-def get_car(request):
+def get_car(request): # get cars by location, id or all
     if request.method == 'POST' and request.data.get('location'):
         pickup = request.data.get('location')
         car = Car.objects.filter(pickup_location__name=pickup)
@@ -35,11 +33,11 @@ def get_car(request):
         return Response({'car': car.data}, status=status.HTTP_200_OK)
     
 @api_view(['POST'])
-def available_cars(request):
+def available_cars(request): # at a given date
     current_date = date.today()
-    end_date = parse_date(request.data.get('pickup_date'))
-    print(current_date, end_date)
-    unavailable_cars = Booking.objects.filter(pickup_date__lte=end_date, end_date__gte=current_date)
+    print(current_date)
+    date_provided = parse_date(request.data.get('pickup_date'))
+    unavailable_cars = Booking.objects.filter(end_date__gte=date_provided)
     if unavailable_cars:
         available_cars = Car.objects.exclude(id__in=unavailable_cars.values_list('car_id', flat=True))
         unavailable_cars = Car.objects.filter(id__in=unavailable_cars.values_list('car_id', flat=True))
@@ -54,40 +52,19 @@ def available_cars(request):
 def view_bookings(request):
     if request.method == 'GET':
         bookings = Booking.objects.all()
-        bookings = BookingSerializer(bookings, many=True)
-        customer_id = Customer.objects.get(user=1)
-        bookings_user = Booking.objects.filter(customer=customer_id.id)
-        # print(bookings_user[0].car, bookings_user[1].car)
+        bookings = BookingSerializer(bookings, many=True)   
         return Response({'bookings': bookings.data}, status=status.HTTP_200_OK)
-
 
 @api_view(['POST'])
 def book_car(request):
-    user = request.user
-    car_id = request.data.get('car_id')
-    current_date = date.today()
-    end_date = parse_date(request.data.get('pickup_date'))
-
-    booking = Booking.objects.create(
-        user=user,
-        car_id=car_id,
-        start_date=current_date,
-        end_date=end_date
-    )
-
-    return Response({"message": "Car booked successfully!"}, status=status.HTTP_201_CREATED)
-
-class CreateBookingView(APIView):
-    def post(self, request):
+    if request.method == 'POST':
         data = request.data
-        
-        # Validate and create the Booking using the serializer
         serializer = BookingSerializer(data=data)
         
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "Booking created successfully!"}, status=status.HTTP_201_CREATED)
-        
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LocationListCreateView(generics.ListCreateAPIView):
