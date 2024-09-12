@@ -10,11 +10,16 @@ function Detail() {
   const dispatch = useDispatch();
   const { allCars, isLoading, isError, message } = useSelector((state) => state.cars);
 
-  useEffect(() => {
+  const fetch = () => {
     dispatch(allCarsDisplay());
-  }, [dispatch])
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [])
 
   if(allCars){
+    console.log(allCars)
     allCars.map((cars) => {
       const item = {
         imgSrc: "img/car-rent-1.png",

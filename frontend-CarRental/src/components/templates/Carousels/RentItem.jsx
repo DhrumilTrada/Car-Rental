@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const RentItem = ({ imgSrc, model, year, transmission, mileage, price }) => {
   return (
@@ -19,9 +20,9 @@ const RentItem = ({ imgSrc, model, year, transmission, mileage, price }) => {
           <span>{mileage}</span>
         </div>
       </div>
-      <a className="btn btn-primary px-3" href="#">
+      <Link className="btn btn-primary px-3" href="#">
         {price}/Day
-      </a>
+      </Link>
     </div>
   );
 };
