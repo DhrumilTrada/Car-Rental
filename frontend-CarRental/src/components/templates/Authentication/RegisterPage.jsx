@@ -21,6 +21,7 @@ const RegisterPage = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+    console.log(useSelector((state) => state.auth))
     const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
 
     const handleChange = (e) => {

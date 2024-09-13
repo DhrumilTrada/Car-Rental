@@ -31,7 +31,7 @@ function Booking() {
   if (isError) {
     return <h1>{message}</h1>;
   }
-  console.log(carById)
+  
   return (
     <div>
       <div className="container-fluid page-header">
@@ -67,7 +67,7 @@ function Booking() {
                 <small>(250)</small>
               </div>
             </div>
-            <p>
+            <p style={{textAlign: "justify"}}>
               {car.description}
             </p>
             <div className="d-flex pt-1">

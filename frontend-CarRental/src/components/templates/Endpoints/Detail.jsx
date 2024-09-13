@@ -16,7 +16,6 @@ function Detail() {
 
   const fetch = () => {
     dispatch(allCarsDisplay());
-    console.log(cars)
   }
 
   useEffect(() => {
@@ -145,7 +144,7 @@ function Detail() {
                   />
                 </div>
               </div>
-              <p>
+              <p style={{textAlign: "justify"}}>
                 {car.description}
               </p>
               <div className="row pt-2">

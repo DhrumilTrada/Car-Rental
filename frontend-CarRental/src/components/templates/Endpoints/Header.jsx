@@ -115,9 +115,6 @@ function Header() {
           </div>
         </div>
       </div>
-      {/* Topbar End */}
-
-      {/* Navbar Start */}
       <div className="container-fluid position-relative nav-bar p-0">
         <div className="position-relative px-lg-5" style={{ zIndex: 9 }}>
           <nav className="navbar navbar-expand-lg bg-secondary navbar-dark py-3 py-lg-0 pl-3 pl-lg-5">
@@ -266,7 +263,7 @@ function Header() {
         <div className="row mx-n2">
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <select className="custom-select px-4" style={{ height: "40px" }} onChange={(e) => setLoc(e.target.value)}>
-              <option value="">Pickup Location</option>
+              <option value="">Pickup Location</option>``
               {locations_state.map((location, index) => (
                 <option key={index} value={location}>
                   {location}
@@ -303,12 +300,11 @@ function Header() {
               className="btn btn-primary btn-block"
               style={{ height: "40px" }}
             >
-              Submit
+              Search
             </button>
           </div>
         </div>
       </div>
-      {/* Search End */}
     </>
   );
 }
