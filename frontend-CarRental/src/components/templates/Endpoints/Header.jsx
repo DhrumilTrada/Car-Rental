@@ -13,7 +13,7 @@ function Header() {
     const access = JSON.parse(user)['access']
     const user_id = jwtDecode(access)['user_id']
   }
-  const location = useLocation();
+  const location = useLocation();            
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentDate = new Date();

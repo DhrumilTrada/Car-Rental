@@ -4,7 +4,6 @@ import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { allCarsDisplay } from "../features/cars_fetch/carSlice";
-import { all } from "axios";
 
 function Detail() {
   const carItems = [];
