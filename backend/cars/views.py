@@ -3,10 +3,10 @@ from rest_framework import status, generics
 from rest_framework.response import Response
 from datetime import date
 from rest_framework import serializers
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.utils import timezone
-
 from .models import Location, Car, Customer, Booking, Review, Insurance, Maintenance, Payment
+from rest_framework.permissions import IsAuthenticated
 from .serializers import LocationSerializer, CarSerializer, CustomerSerializer, BookingSerializer, ReviewSerializer, InsuranceSerializer, MaintenanceSerializer, PaymentSerializer, LocationNameSerializer
 
 @api_view(['GET'])
@@ -18,26 +18,44 @@ def view_locations(request): # view locations with name and id using LocationNam
     
 @api_view(['GET', 'POST'])
 def get_car(request): # get cars by location, id or all
-    if request.method == 'POST' and request.data.get('location'):
-        pickup = request.data.get('location')
-        car = Car.objects.filter(pickup_location__name=pickup)
-        car =  CarSerializer(car, many=True)
-        return Response({'car': car.data}, status=status.HTTP_200_OK)
+    if request.method == 'POST':
+        pickup = request.data.get('pickup')
+        location = request.data.get('location')
+        if location and pickup:
+            unavailable_car_ids = Booking.objects.filter(end_date__gte=pickup).values_list('car_id', flat=True)
+            car = Car.objects.filter(pickup_location__name=location)
+            available_cars = car.exclude(id__in=unavailable_car_ids)
+            available_cars =  CarSerializer(available_cars, many=True)
+            return Response({'car': available_cars.data}, status=status.HTTP_200_OK)
+        elif location:
+            car = Car.objects.filter(pickup_location__name=location)
+            car =  CarSerializer(car, many=True)
+            return Response({'car': car.data}, status=status.HTTP_200_OK)
+        # else:
     if request.method == 'POST' and request.data.get('id'):
         car_id = request.data.get('id')
         print(car_id)
         car = Car.objects.get(id=car_id)
         car =  CarSerializer(car, many=False)
         return Response({'car': car.data}, status=status.HTTP_200_OK)
+    if request.method == 'POST' and request.data.get('model'):
+        car_model = request.data.get('model')
+        car = Car.objects.filter(model=car_model)
+        car =  CarSerializer(car, many=True)
+        return Response({'car': car.data}, status=status.HTTP_200_OK)
     else:
         car = Car.objects.all()
         car =  CarSerializer(car, many=True)
         return Response({'car': car.data}, status=status.HTTP_200_OK)
     
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def get_user_details(request):
+    user = request.user
+    return Response({"first_name": user.first_name, "email": user.email, "last_name":user.last_name}, status=status.HTTP_200_OK)    
+    
 @api_view(['POST'])
 def available_cars(request): # at a given date
-    current_date = date.today()
-    print(request.headers.get("Authorization"))
     date_provided = parse_date(request.data.get('pickup_date'))
     unavailable_cars = Booking.objects.filter(end_date__gte=date_provided)
     if unavailable_cars:

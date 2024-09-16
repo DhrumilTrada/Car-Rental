@@ -1,18 +1,20 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import DatePickerC from "../React UI/DatePicker";
-import TimePickerC from "../React UI/TimePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
-import { availableCar, availableCars, viewLocations } from '../features/cars_fetch/carSlice';
-import { jwtDecode } from "jwt-decode";
+import { availableCar, availableCars, getCarByName, viewLocations } from '../features/cars_fetch/carSlice';
+import CustomDatePicker from "../React UI/DatePicker";
+import CustomTimePicker from "../React UI/TimePicker"
+import { toast } from "react-toastify";
+import Modal from 'react-bootstrap/Modal';
+import axios from "axios";
 
 function Header() {
   const user = localStorage.getItem("user");
   if(user){
     const access = JSON.parse(user)['access']
-    const user_id = jwtDecode(access)['user_id']
-  }
+  }     
+  const [show, setShow] = useState(false);
   const location = useLocation();            
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,8 +30,61 @@ function Header() {
   const [loc, setLoc] = useState('')
   const [cars_state, setCarsState] = useState([])
   const today = new Date().toISOString().split("T")[0];
-  const { carsAtLocation, locations, isLoading, isError, message } = useSelector((state) => state.cars);
-        
+  const [carSelected, setCarSelected] = useState("")
+  const { carsAtLocation, carById, locations, isLoading } = useSelector((state) => state.cars);
+  const [formdata, setFormData] = useState({
+    "pickup_location":null,
+    "drop_location":null,
+    "pickup_date":date,
+    "pickup_time":time,
+    "car_selected":null,
+  })
+
+  const data = {
+    "pickup_location":"Pickup Location",
+    "pickup_date":"Pickup Date",
+    "pickup_time":"Pickup Time",
+    "car_selected":"Car",
+    "drop_location":"Drop Location",
+  }
+
+  const submitRequest = () => {
+    console.log(formdata)
+    setShow(true)
+    for(let key in formdata){
+      if(formdata[key] == null || !formdata[key]){
+        toast.error(`Please fill the ${data[key]} field`)
+      }
+    }
+    if(Object.values(formdata).every(value => value !== null)){
+      console.log("Submitted")
+    }
+  }
+
+  const handleTimeChange = (newTime) => {
+    setTime(newTime);
+  };
+
+  const handleDateChange = (newDate) => {
+    setDate(newDate);
+  };
+
+  const handleChange = (e) => {
+    if(e.target.name === "car_selected"){
+      setCarSelected(e.target.value)
+    }
+    setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+    })
+  )}
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev, "pickup_date":date, "pickup_time":time
+    }))
+  }, [date, time])
+
   useEffect(() => {
     setDate("")
     setTime("")
@@ -38,15 +93,23 @@ function Header() {
   }, [])
 
   useEffect(() => {
-    dispatch(availableCars(loc))
-  }, [loc])
+    dispatch(availableCars({"location":loc, "pickup":date}))
+  }, [loc, date])
 
   useEffect(() => {
     if(locations && carsAtLocation){
-      setLocationsState(locations.map((locations) => locations.name))
-      setCarsState(carsAtLocation.map((cars) => cars.model))
+      setLocationsState(locations.map((location) => location.name))
+      setCarsState(carsAtLocation)
     }
   }, [carsAtLocation, locations])
+
+  useEffect(() => {
+    dispatch(getCarByName(carSelected))
+  }, [carSelected])
+
+  if(carById){
+    console.log(carById)
+  }
 
   const isCarsActive =
     location.pathname === "/car_display" ||
@@ -262,7 +325,12 @@ function Header() {
       <div className="container-fluid bg-white pt-3 px-lg-5">
         <div className="row mx-n2">
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select className="custom-select px-4" style={{ height: "40px" }} onChange={(e) => setLoc(e.target.value)}>
+            <select className="custom-select px-4" style={{ height: "40px" }} name="pickup_location" onChange={(e) => 
+              {
+                const selectedLocation = e.target.value;
+                setLoc(selectedLocation);
+                handleChange({ target: { name: 'pickup_location', value: selectedLocation } });
+              }}>
               <option value="">Pickup Location</option>``
               {locations_state.map((location, index) => (
                 <option key={index} value={location}>
@@ -272,7 +340,7 @@ function Header() {
             </select>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select className="custom-select px-4" style={{ height: "40px" }}>
+            <select className="custom-select px-4" name="drop_location" onChange={handleChange} style={{ height: "40px" }}>
               <option defaultValue>Drop Location</option>
               <option value={1}>Location 1</option>
               <option value={2}>Location 2</option>
@@ -280,17 +348,17 @@ function Header() {
             </select>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <DatePickerC date={date} minDate={today} />
+            <CustomDatePicker date={date} minDate={today} onDateChange={handleDateChange} />
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <TimePickerC time={time} />
+            <CustomTimePicker time={time} onTimeChange={handleTimeChange} />
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select className="custom-select px-4" style={{ height: "40px" }}>
+            <select className="custom-select px-4" name="car_selected" onChange={handleChange} style={{ height: "40px" }}>
               <option defaultValue>Select A Car</option>
-              {cars_state.map((car, index) => (
-                <option key={index} value={car}>
-                  {car}
+              {cars_state.map((car) => ( 
+                <option key={car.id} value={car.model}>
+                  {car.model}
                 </option>
               ))}
             </select>
@@ -298,13 +366,30 @@ function Header() {
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <button
               className="btn btn-primary btn-block"
-              style={{ height: "40px" }}
+              style={{ height: "40px" }} onClick={submitRequest}
             >
               Search
             </button>
           </div>
         </div>
       </div>
+      <Modal show={show} onHide={() => setShow(false)} dialogClassName="custom-modal" aria-labelledby="custom-modal-title" centered>
+        <Modal.Header closeButton className="custom-modal-header">
+          <Modal.Title id="custom-modal-title">
+            DriveHex Rentals
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="custom-modal-body">
+          {(carById && show) ? 
+          <>
+            <p>{carById[0].model}</p> 
+            <p>{carById[0].brand}</p>
+            <p>{carById[0].description}</p>
+            <p>{carById[0].mileage}</p>
+            <p>{carById[0].transmission}</p>
+          </> : ""}
+        </Modal.Body>
+      </Modal>
     </>
   );
 }

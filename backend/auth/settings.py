@@ -114,11 +114,9 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': (
-        'Bearer',
-        'JWT'),
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
+    'AUTH_HEADER_TYPES': ('Bearer', 'JWT'),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=10),
     'SIGNING_KEY': env('SIGNING_KEY'),
     'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),

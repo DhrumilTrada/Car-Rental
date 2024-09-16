@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
-export default function CustomDatePicker() {
-  const [date, setDate] = useState('');
+export default function CustomDatePicker({ date, minDate, onDateChange }) {
   const dateInputRef = useRef(null);
-  const today = new Date().toISOString().split("T")[0];
+  const today = minDate;
+
   const handleIconClick = () => {
     dateInputRef.current.showPicker(); // Opens the native date picker
   };
@@ -17,10 +17,10 @@ export default function CustomDatePicker() {
         placeholder="Pickup Date"
         min={today} // Sets today's date as the minimum date
         value={date}
-        onChange={(e) => setDate(e.target.value)}
+        onChange={(e) => onDateChange(e.target.value)}
         onClick={(e) => {
-            if(!e.target.value) setDate(today)}
-        }
+          if (!e.target.value) onDateChange(today);
+        }}
         ref={dateInputRef}
       />
       <i

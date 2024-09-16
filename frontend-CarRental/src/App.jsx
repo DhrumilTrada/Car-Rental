@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements, } from "react-router-dom";
+import Layout from "./Layout";
 import Index from "./components/templates/Endpoints/Index";
 import About from "./components/templates/Endpoints/About";
 import Booking from "./components/templates/Endpoints/Booking";
@@ -15,7 +16,6 @@ import RegisterPage from "./components/templates/Authentication/RegisterPage";
 import ActivatePage from "./components/templates/Authentication/ActivatePage";
 import ResetPasswordPage from "./components/templates/Authentication/ResetPasswordPage"
 import ResetPasswordPageConfirm from "./components/templates/Authentication/ResetPasswordPageConfirm"
-import Layout from "./Layout";
 import { ToastContainer } from"react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import $ from "jquery";

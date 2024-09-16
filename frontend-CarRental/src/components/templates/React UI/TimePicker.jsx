@@ -1,7 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
-export default function CustomTimePicker() {
-  const [time, setTime] = useState('');
+export default function CustomTimePicker({ time, onTimeChange }) {
   const timeInputRef = useRef(null);
 
   const getCurrentTime = () => {
@@ -12,6 +11,7 @@ export default function CustomTimePicker() {
   };
 
   const currentTime = getCurrentTime();
+
   const handleIconClick = () => {
     timeInputRef.current.showPicker();
   };
@@ -24,10 +24,10 @@ export default function CustomTimePicker() {
         className="form-control px-4"
         placeholder="Pickup Time"
         value={time}
-        onChange={(e) => setTime(e.target.value)}
+        onChange={(e) => onTimeChange(e.target.value)}
         onClick={(e) => {
-            if(!e.target.value) setTime(currentTime)}
-        }
+          if (!e.target.value) onTimeChange(currentTime);
+        }}
         ref={timeInputRef}
       />
       <i

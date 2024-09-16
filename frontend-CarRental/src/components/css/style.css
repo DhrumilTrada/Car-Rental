@@ -366,3 +366,40 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     color: var(--light) !important;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1) !important;
 }
+
+.custom-modal {
+    max-width: 1000px;
+    border-radius: 15px !important;
+    overflow: hidden;
+    padding: 0px 20px;
+    box-shadow: 0 5px 15px rgba(248, 247, 247, 0.4); 
+}
+.custom-modal-header {
+    /* border-radius: 15px !important; */
+  background-color: var(--secondary);
+  color: var(--primary) !important;
+  border-bottom: none;
+}
+
+.custom-modal-header .modal-title {
+  font-size: 24px;
+  /* border-radius: 15px !important; */
+  font-weight: bold;
+  color: var(--primary) !important;
+  width: 100%;
+  margin: 0;
+}
+.custom-modal-body {
+    border-radius: 15px !important;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.6;
+}
+  
+.modal-body{
+    border-radius: 15px !important;
+}
+
+.custom-modal-body p {
+  text-align: justify;
+}

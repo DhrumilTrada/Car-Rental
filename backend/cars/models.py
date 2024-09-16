@@ -62,7 +62,6 @@ class Car(models.Model):
     def __str__(self):
         return f"{self.brand} {self.model} ({self.year})"
 
-
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20)
@@ -79,7 +78,6 @@ class Customer(models.Model):
 class Booking(models.Model):
     STATUS_CHOICES = [
         ('confirmed', 'Confirmed'),
-        ('cancelled', 'Cancelled'),
         ('completed', 'Completed'),
     ]
 

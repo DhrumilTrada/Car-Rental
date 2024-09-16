@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link } from 'react-router-dom'
 
@@ -16,8 +16,6 @@ function Service() {
           <h6 className="text-uppercase text-body m-0">Service</h6>
         </div>
       </div>
-      {/* Page Header Start */}
-      {/* Services Start */}
       <div className="container-fluid py-5">
         <div className="container pt-5 pb-3">
           <h1 className="display-4 text-uppercase text-center mb-5">
@@ -135,8 +133,6 @@ function Service() {
           </div>
         </div>
       </div>
-      {/* Services End */}
-      {/* Banner Start */}
       <div className="container-fluid py-5">
         <div className="container py-5">
           <div className="bg-banner py-5 px-4 text-center">
@@ -155,15 +151,11 @@ function Service() {
           </div>
         </div>
       </div>
-      {/* Banner End */}
-      {/* Vendor Start */}
       <div className="container-fluid py-5">
         <div className="container">
         <Carousel />
         </div>
       </div>
-      {/* Vendor End */}
-      {/* Back to Top */}
       <button
         onClick={handleScrollToTop}
         className="btn btn-lg btn-primary btn-lg-square back-to-top"
