@@ -91,7 +91,7 @@ function Car() {
                         <span>{car.kms_driven/1000}K</span>{" "}
                       </div>
                     </div>
-                    <Link to='/booking' state={{ carIndex: car.id }}  className="btn btn-primary px-3">
+                    <Link to='/booking' state={{ carIndex: car.id, pickup_date: currentDate }}  className="btn btn-primary px-3">
                       {car.price_per_day}/Day
                     </Link>{" "}
                   </div>

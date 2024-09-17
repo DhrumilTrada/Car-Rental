@@ -7,13 +7,12 @@ import CustomDatePicker from "../React UI/DatePicker";
 import CustomTimePicker from "../React UI/TimePicker"
 import { toast } from "react-toastify";
 import Modal from 'react-bootstrap/Modal';
+import CloseButton from 'react-bootstrap/CloseButton';
 import axios from "axios";
 
-function Header() {
-  const user = localStorage.getItem("user");
-  if(user){
-    const access = JSON.parse(user)['access']
-  }     
+function Header() {   
+  const access = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).access : ""
+  const refresh = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).refresh : ""
   const [show, setShow] = useState(false);
   const location = useLocation();            
   const dispatch = useDispatch();
@@ -31,6 +30,7 @@ function Header() {
   const [cars_state, setCarsState] = useState([])
   const today = new Date().toISOString().split("T")[0];
   const [carSelected, setCarSelected] = useState("")
+  const [user, setUser] = useState({})
   const { carsAtLocation, carById, locations, isLoading } = useSelector((state) => state.cars);
   const [formdata, setFormData] = useState({
     "pickup_location":null,
@@ -50,14 +50,13 @@ function Header() {
 
   const submitRequest = () => {
     console.log(formdata)
-    setShow(true)
     for(let key in formdata){
       if(formdata[key] == null || !formdata[key]){
-        toast.error(`Please fill the ${data[key]} field`)
+        // toast.error(`Please fill the ${data[key]} field`)
       }
     }
     if(Object.values(formdata).every(value => value !== null)){
-      console.log("Submitted")
+      setShow(true)
     }
   }
 
@@ -85,11 +84,56 @@ function Header() {
     }))
   }, [date, time])
 
+  const getUserInfo = async (token) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/user-details/",{},{
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      );
+      setUser(response.data)
+    } catch (error) {
+      if (refresh) {
+        try {
+          const newToken = await axios.post(
+            "http://127.0.0.1:8000/api/v1/auth/jwt/refresh/",{"refresh":refresh},{
+              headers: {
+                "Content-Type": "application/json",
+              }
+            }
+          );
+          const newAccessToken = newToken.data.access;
+          localStorage.setItem(
+            "user",
+            JSON.stringify({refresh:refresh, access: newAccessToken })
+          );
+          toast.success("Generated a new access token for login.");
+          const retryResponse = await axios.post(
+            "http://127.0.0.1:8000/user-details/",{},{
+              headers: {
+                "Authorization": `Bearer ${newAccessToken}`
+              }
+            }
+          );  
+          return retryResponse.data;
+        } catch (refreshError) {
+          console.error("Failed to refresh token:", refreshError);
+          toast.error("Unable to refresh the access token.");
+        }
+      } else {
+        toast.error("No refresh token found.");
+      }
+    }
+  };
+
   useEffect(() => {
     setDate("")
     setTime("")
     dispatch(viewLocations())
     dispatch(availableCar())
+    getUserInfo(access)
   }, [])
 
   useEffect(() => {
@@ -107,10 +151,6 @@ function Header() {
     dispatch(getCarByName(carSelected))
   }, [carSelected])
 
-  if(carById){
-    console.log(carById)
-  }
-
   const isCarsActive =
     location.pathname === "/car_display" ||
     location.pathname === "/details" ||
@@ -126,7 +166,6 @@ function Header() {
       dropdown.querySelector(".dropdown-menu").classList.remove("show");
     }
   };
-
 
   const handleLogout = () => {
     dispatch(logout());
@@ -291,7 +330,7 @@ function Header() {
                     </NavLink>
                   </div>
                 </div>
-                {user ? (
+                {access ? (
                   <>
                     <NavLink
                       to="/contact"
@@ -373,7 +412,7 @@ function Header() {
           </div>
         </div>
       </div>
-      <Modal show={show} onHide={() => setShow(false)} dialogClassName="custom-modal" aria-labelledby="custom-modal-title" centered>
+      <Modal show={show} onHide={() => setShow(false)} dialogClassName="custom-modal" aria-labelledby="custom-modal-title contained-modal-title-vcenter">
         <Modal.Header closeButton className="custom-modal-header">
           <Modal.Title id="custom-modal-title">
             DriveHex Rentals
@@ -387,6 +426,9 @@ function Header() {
             <p>{carById[0].description}</p>
             <p>{carById[0].mileage}</p>
             <p>{carById[0].transmission}</p>
+            <div className="text-center">
+              <Link onClick={() => {setShow(false)}} className="btn btn-primary px-3" style={{borderRadius:5}} state={{ carIndex: carById[0].id, user: user }} to='/booking'>Proceed to book.</Link>
+            </div>
           </> : ""}
         </Modal.Body>
       </Modal>

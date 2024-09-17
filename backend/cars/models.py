@@ -15,31 +15,31 @@ class Location(models.Model):
 
 class Car(models.Model):
     FUEL_TYPE_CHOICES = [
-        ('petrol', 'Petrol'),
-        ('diesel', 'Diesel'),
-        ('electric', 'Electric'),
-        ('hybrid', 'Hybrid'),
+        ('Petrol', 'Petrol'),
+        ('Diesel', 'Diesel'),
+        ('Electric', 'Electric'),
+        ('Hybrid', 'Hybrid'),
     ]
 
     TYPE_CHOICES = [
-        ('suv', 'SUV'),
-        ('sedan', 'Sedan'),
-        ('hatchback', 'Hatchback'),
-        ('convertible', 'Convertible'),
-        ('coupe', 'Coupe'),
-        ('wagon', 'Wagon'),
-        ('pickup', 'Pickup Truck'),
-        ('minivan', 'Minivan'),
-        ('sports', 'Sports Car'),
-        ('luxury', 'Luxury'),
-        ('cross_over', 'Crossover'),
-        ('roadster', 'Roadster'),
-        ('coupe_suv', 'Coupe SUV'),
+        ('Suv', 'SUV'),
+        ('Sedan', 'Sedan'),
+        ('Hatchback', 'Hatchback'),
+        ('Convertible', 'Convertible'),
+        ('Coupe', 'Coupe'),
+        ('Wagon', 'Wagon'),
+        ('Pickup', 'Pickup Truck'),
+        ('Minivan', 'Minivan'),
+        ('Sports Car', 'Sports Car'),
+        ('Luxury', 'Luxury'),
+        ('Crossover', 'Crossover'),
+        ('Roadster', 'Roadster'),
+        ('Coupe SUV', 'Coupe SUV'),
     ]
 
     TRANSMISSION_CHOICES = [
-        ('automatic', 'Automatic'),
-        ('manual', 'Manual'),
+        ('Automatic', 'Automatic'),
+        ('Manual', 'Manual'),
     ]
 
     pickup_location = models.ForeignKey(Location, related_name='pickup_cars', on_delete=models.CASCADE)
@@ -77,8 +77,8 @@ class Customer(models.Model):
 
 class Booking(models.Model):
     STATUS_CHOICES = [
-        ('confirmed', 'Confirmed'),
-        ('completed', 'Completed'),
+        ('Confirmed', 'Confirmed'),
+        ('Completed', 'Completed'),
     ]
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
