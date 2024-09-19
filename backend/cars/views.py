@@ -1,13 +1,17 @@
+from django.http import JsonResponse
 from django.utils.dateparse import parse_date
+from rest_framework.views import APIView
 from rest_framework import status, generics
 from rest_framework.response import Response
-from datetime import date
+from django.db import transaction
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
 from django.utils import timezone
-from .models import Location, Car, Customer, Booking, Review, Insurance, Maintenance, Payment
+from users.models import User
+from .models import Location, Car, Customer, Booking, Review, Payment
 from rest_framework.permissions import IsAuthenticated
-from .serializers import LocationSerializer, CarSerializer, CustomerSerializer, BookingSerializer, ReviewSerializer, InsuranceSerializer, MaintenanceSerializer, PaymentSerializer, LocationNameSerializer
+from .serializers import LocationSerializer, CarSerializer, CustomerSerializer, BookingSerializer, ReviewSerializer, PaymentSerializer, LocationNameSerializer
 
 @api_view(['GET'])
 def view_locations(request): # view locations with name and id using LocationNameSerializer
@@ -86,6 +90,61 @@ def book_car(request):
             return Response({"message": "Booking created successfully!"}, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(["POST"])
+def customer_booking(request):
+    data = request.data
+    customer_email = data.get('customer_email')
+    user = get_object_or_404(User, email=customer_email)
+    customer = get_object_or_404(Customer, user=user)
+    booking = Booking.objects.filter(customer=customer)
+    booking = BookingSerializer(booking, many=True)
+    return Response({"booking": booking.data}, status=status.HTTP_200_OK)
+    
+@api_view(['POST'])
+@transaction.atomic
+def create_payment_and_booking(request):
+    data = request.data
+    customer_email = data.get('customer_email')
+    user = User.objects.get(email=customer_email)
+    customer = Customer.objects.get(user=user)
+    car_name = data.get('car_name')
+    car = Car.objects.get(model=car_name)
+
+    payment_method = data.get('payment_method')
+    amount_paid = data.get('amount_paid')
+    if not payment_method or not amount_paid:
+        return JsonResponse({"error": "Payment method and amount are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        if payment_method == 'Credit Card' and amount_paid > 0:
+            payment_status = 'Success'
+        else:
+            return JsonResponse({"error": "Payment failed."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if payment_status == 'Success':
+            booking = Booking.objects.create(
+                customer=customer,
+                car=car,
+                pickup_date=data.get('pickup_date'),
+                end_date=data.get('end_date'),
+                total_price=data.get('total_price'),
+                status='Confirmed'
+            )
+
+            Payment.objects.create(
+                booking=booking,
+                payment_method=payment_method,
+                amount_paid=amount_paid,
+                payment_status=payment_status
+            )
+
+            return JsonResponse({"message": "Payment successful and booking created.", "booking_id": booking.id}, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return JsonResponse({"error": f"An error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 class LocationListCreateView(generics.ListCreateAPIView):
     queryset = Location.objects.all()
@@ -119,14 +178,6 @@ class ReviewListCreateView(generics.ListCreateAPIView):
             raise serializers.ValidationError("You can only review cars you have previously booked.")
         
         serializer.save(customer=customer)
-
-class InsuranceListCreateView(generics.ListCreateAPIView):
-    queryset = Insurance.objects.all()
-    serializer_class = InsuranceSerializer
-
-class MaintenanceListCreateView(generics.ListCreateAPIView):
-    queryset = Maintenance.objects.all()
-    serializer_class = MaintenanceSerializer
 
 class PaymentListCreateView(generics.ListCreateAPIView):
     queryset = Payment.objects.all()

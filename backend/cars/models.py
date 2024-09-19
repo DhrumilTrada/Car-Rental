@@ -113,32 +113,6 @@ class Review(models.Model):
     def __str__(self):
         return f"Review by {self.customer.user.email} for {self.car}"
 
-class Insurance(models.Model):
-    car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    insurance_company = models.CharField(max_length=100)
-    policy_number = models.CharField(max_length=100)
-    coverage_details = models.TextField()
-    start_date = models.DateField()
-    end_date = models.DateField()
-
-    class Meta:
-        db_table = 'insurances'
-
-    def __str__(self):
-        return f"Policy {self.policy_number} by {self.insurance_company}"
-
-class Maintenance(models.Model):
-    car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    service_type = models.CharField(max_length=100)
-    description = models.TextField()
-    date = models.DateField()
-    cost = models.DecimalField(max_digits=10, decimal_places=2)
-
-    class Meta:
-        db_table = 'maintenances'
-
-    def __str__(self):
-        return f"Maintenance {self.id} for {self.car}"
 
 class Payment(models.Model):
     booking = models.OneToOneField('Booking', on_delete=models.CASCADE)
@@ -154,8 +128,6 @@ class Payment(models.Model):
     
     PAYMENT_STATUS_CHOICES = [
         ('Success', 'Success'),
-        ('Failed', 'Failed'),
-        ('Pending', 'Pending'),
     ]
     payment_status = models.CharField(max_length=50, choices=PAYMENT_STATUS_CHOICES)
 

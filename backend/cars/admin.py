@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Location, Car, Customer, Booking, Review, Insurance, Maintenance, Payment
+from .models import Location, Car, Customer, Booking, Review, Payment
 
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
@@ -27,17 +27,6 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('customer', 'car', 'rating', 'created_at')
     list_filter = ('rating',)
     search_fields = ('customer__user__username', 'car__model')
-
-@admin.register(Insurance)
-class InsuranceAdmin(admin.ModelAdmin):
-    list_display = ('insurance_company', 'policy_number', 'coverage_details', 'start_date', 'end_date')
-    search_fields = ('insurance_company', 'policy_number')
-
-@admin.register(Maintenance)
-class MaintenanceAdmin(admin.ModelAdmin):
-    list_display = ('car', 'service_type', 'date', 'cost')
-    list_filter = ('service_type', 'date')
-    search_fields = ('car__model', 'service_type')
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):

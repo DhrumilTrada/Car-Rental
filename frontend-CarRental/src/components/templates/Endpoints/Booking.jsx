@@ -12,12 +12,12 @@ function Booking() {
   const [userDetails, setUser] = useState({})
   const { carById, locations, isLoading, isError, message } = useSelector((state) => state.cars);
   const car_id = useLocation();
-  const { carIndex, user, pickup_date } = car_id.state ? car_id.state : ""
+  const { carIndex, pickup_date } = car_id.state ? car_id.state : ""
   const [car, setCar] = useState({})
   const [booking, setBooking] = useState({
-    "customer_email": "",
-    "car_name": "",
-    "pickup_date": pickup_date ? pickup_date : "",
+    "customer_email": null,
+    "car_id": null,
+    "pickup_date": null,
     "end_date": null,
     "total_price": null,
     "status": null
@@ -96,11 +96,11 @@ function Booking() {
   const handleBooking = () => {
     setBooking({
       customer_email: userDetails.email,
-      car_name: car.model,
-      pickup_date: pickup_date,
+      car_name: car.id,
+      pickup_date: pickup_date ? pickup_date : "",
       end_date: null,
       total_price: car.price_per_day,
-      status: "confirmed"
+      status: "Confirmed"
     })
   }
 
@@ -198,7 +198,7 @@ function Booking() {
                     type="text"
                     className="form-control p-4"
                     placeholder="First Name"
-                    value={userDetails.first_name || ""}
+                    defaultValue={userDetails.first_name || ""}
                     disabled
                     readOnly
                   />
@@ -209,7 +209,7 @@ function Booking() {
                     type="text"
                     className="form-control p-4"
                     placeholder="Last Name"
-                    value={userDetails.last_name || ""}
+                    defaultValue={userDetails.last_name || ""}
                     disabled
                     readOnly
                   />
@@ -222,7 +222,7 @@ function Booking() {
                     type="email"
                     className="form-control p-4"
                     placeholder="Your Email"
-                    value={userDetails.email || ""}
+                    defaultValue={userDetails.email || ""}
                     disabled
                     readOnly
                   />
@@ -331,6 +331,11 @@ function Booking() {
                       </div>
                       <div className="col-6 border-bottom border-left border-right text-center">
                         <span>{car.fuel_type}</span>
+                      </div>
+                    </div>
+                    <div className="row mb-2">
+                      <div className="col-12 border-bottom border-left border-right text-center">
+                        <span className="font-weight-bold">Price: {car.price_per_day} <span className="text-muted ml-2">(inc of all taxes)</span></span>
                       </div>
                     </div>
                   </div>

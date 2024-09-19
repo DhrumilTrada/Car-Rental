@@ -7,11 +7,16 @@ import axios from "axios";
 
 function Car() {
   const dispatch = useDispatch();
-  const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
+  const [currentDate, setCurrentDate] = useState(() => {
+    const utcDate = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000;
+    const istDate = new Date(utcDate.getTime() + istOffset);
+    return istDate.toISOString().split('T')[0];
+  });
   const { carsAtDate, locations, isLoading, isError, message } = useSelector((state) => state.cars);
   const [userData, setUserData] = useState({})
   const token = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).access : ""
-
+  console.log(currentDate)
   useEffect(() => {
     dispatch(viewLocations());
     dispatch(availableAtDate(currentDate));

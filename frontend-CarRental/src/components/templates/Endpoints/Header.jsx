@@ -427,7 +427,7 @@ function Header() {
             <p>{carById[0].mileage}</p>
             <p>{carById[0].transmission}</p>
             <div className="text-center">
-              <Link onClick={() => {setShow(false)}} className="btn btn-primary px-3" style={{borderRadius:5}} state={{ carIndex: carById[0].id, user: user }} to='/booking'>Proceed to book.</Link>
+              <Link onClick={() => {setShow(false)}} className="btn btn-primary px-3" style={{borderRadius:5}} state={{ carIndex: carById[0].id, user: user, pickup_date: formdata.pickup_date }} to='/booking'>Proceed to book.</Link>
             </div>
           </> : ""}
         </Modal.Body>
