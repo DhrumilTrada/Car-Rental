@@ -3,19 +3,80 @@ import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCar, reset } from '../features/cars_fetch/carSlice';
+import axios from "axios";
 
 function Booking() {
+  const access = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).access : ""
+  const refresh = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).refresh : ""
   const dispatch = useDispatch();
-  const { carById, isLoading, isError, message } = useSelector((state) => state.cars);
+  const [userDetails, setUser] = useState({})
+  const { carById, locations, isLoading, isError, message } = useSelector((state) => state.cars);
   const car_id = useLocation();
-  const { carIndex } = car_id.state
-  const [car, setCar] = useState({})  
+  const { carIndex, pickup_date } = car_id.state ? car_id.state : ""
+  const [car, setCar] = useState({})
+  const [booking, setBooking] = useState({
+    "customer_email": null,
+    "car_id": null,
+    "pickup_date": null,
+    "end_date": null,
+    "total_price": null,
+    "status": null
+  })
 
+  const getUserInfo = async (token) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/user-details/",{},{
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      );
+      setUser(response.data)
+    } catch (error) {
+      if (refresh) {
+        try {
+          const newToken = await axios.post(
+            "http://127.0.0.1:8000/api/v1/auth/jwt/refresh/",{"refresh":refresh},{
+              headers: {
+                "Content-Type": "application/json",
+              }
+            }
+          );
+          const newAccessToken = newToken.data.access;
+          localStorage.setItem(
+            "user",
+            JSON.stringify({refresh:refresh, access: newAccessToken })
+          );
+          toast.success("Generated a new access token for login.");
+          const retryResponse = await axios.post(
+            "http://127.0.0.1:8000/user-details/",{},{
+              headers: {
+                "Authorization": `Bearer ${newAccessToken}`
+              }
+            }
+          );  
+          return retryResponse.data;
+        } catch (refreshError) {
+          console.error("Failed to refresh token:", refreshError);
+          toast.error("Unable to refresh the access token.");
+        }
+      } else {
+        toast.error("No refresh token found.");
+      }
+    }
+  };
+  
   useEffect(() => {
     if(carById){
       dispatch(reset())
     }
-    dispatch(getCar(carIndex))
+    if(carIndex){
+      dispatch(getCar(carIndex))
+    }else{
+      dispatch(getCar(1))
+    }
+    getUserInfo(access)
   }, [])
 
   useEffect(() => {
@@ -31,7 +92,20 @@ function Booking() {
   if (isError) {
     return <h1>{message}</h1>;
   }
-  
+
+  const handleBooking = () => {
+    setBooking({
+      customer_email: userDetails.email,
+      car_name: car.id,
+      pickup_date: pickup_date ? pickup_date : "",
+      end_date: null,
+      total_price: car.price_per_day,
+      status: "Confirmed"
+    })
+  }
+
+  console.log(booking)
+
   return (
     <div>
       <div className="container-fluid page-header">
@@ -116,69 +190,160 @@ function Booking() {
             <div className="col-lg-8">
               <h2 className="mb-4">Personal Detail</h2>
               <div className="mb-5">
-                <div className="row">
-                  <div className="col-6 form-group">
-                    <input
-                      type="text"
-                      className="form-control p-4"
-                      placeholder="First Name"
-                      required="required"
-                    />
-                  </div>
-                  <div className="col-6 form-group">
-                    <input
-                      type="text"
-                      className="form-control p-4"
-                      placeholder="Last Name"
-                      required="required"
-                    />
-                  </div>
+                {userDetails ? 
+                <>
+                  <div className="row">
+                <div className="col-6 form-group tooltip-container">
+                  <input
+                    type="text"
+                    className="form-control p-4"
+                    placeholder="First Name"
+                    defaultValue={userDetails.first_name || ""}
+                    disabled
+                    readOnly
+                  />
+                  <span className="tooltip-text">This field is disabled</span>
                 </div>
-                <div className="row">
-                  <div className="col-6 form-group">
-                    <input
-                      type="email"
-                      className="form-control p-4"
-                      placeholder="Your Email"
-                      required="required"
-                    />
-                  </div>
-                  <div className="col-6 form-group">
-                    <input
-                      type="text"
-                      className="form-control p-4"
-                      placeholder="Mobile Number"
-                      required="required"
-                    />
-                  </div>
+                <div className="col-6 form-group tooltip-container">
+                  <input
+                    type="text"
+                    className="form-control p-4"
+                    placeholder="Last Name"
+                    defaultValue={userDetails.last_name || ""}
+                    disabled
+                    readOnly
+                  />
+                  <span className="tooltip-text">This field is disabled</span>
                 </div>
+              </div>
+              <div className="row">
+                <div className="col-6 form-group tooltip-container">
+                  <input
+                    type="email"
+                    className="form-control p-4"
+                    placeholder="Your Email"
+                    defaultValue={userDetails.email || ""}
+                    disabled
+                    readOnly
+                  />
+                  <span className="tooltip-text">This field is disabled</span>
+                </div>
+                <div className="col-6 form-group">
+                  <input
+                    type="text"
+                    className="form-control p-4"
+                    placeholder="Mobile Number"
+                    required="required"
+                  />
+                </div>
+              </div>
+                </> : ""}
+                <div className="row">
+                <div className="col-6 form-group">
+                  <input
+                    type="email"
+                    className="form-control p-4"
+                    placeholder="Your Driving Licence Expiry"
+                    value={""}
+                  />
+                </div>
+                <div className="col-6 form-group text-right">
+                  <input
+                    type="button"
+                    className="btn btn-primary mt-4"
+                    value="Save Customer"
+                  />
+                </div>
+              </div>
               </div>
               <h2 className="mb-4">Booking Detail</h2>
               <div className="mb-5">
                 <div className="row">
-                  <div className="col-6 form-group">
-                    <select
-                      className="custom-select px-4"
-                      style={{ height: "50px" }}
-                    >
-                      <option defaultValue>Pickup Location</option>
-                      <option value={1}>Location 1</option>
-                      <option value={2}>Location 2</option>
-                      <option value={3}>Location 3</option>
-                    </select>
+                <div className="col-6 mb-2">
+              <div className="service-item active d-flex flex-column px-4 mb-4">
+                <div className="d-flex align-items-center justify-content-between mb-3">
+                  <div
+                    className="d-flex align-items-center justify-content-center bg-primary ml-n4"
+                    style={{ width: "80px", height: "80px" }}
+                  >
+                    <i className="fa fa-2x fa-car text-secondary" />
                   </div>
-                  <div className="col-6 form-group">
-                    <select
-                      className="custom-select px-4"
-                      style={{ height: "50px" }}
-                    >
-                      <option defaultValue>Drop Location</option>
-                      <option value={1}>Location 1</option>
-                      <option value={2}>Location 2</option>
-                      <option value={3}>Location 3</option>
-                    </select>
+                  <h3 className="text-uppercase text-light mb-3">{car.model}</h3>
+                </div>
+                  <div className="table">
+                    <div className="row mb-2">
+                      <div className="col-6 border-bottom border-top border-left border-right text-center">
+                        <span className="font-weight-bold">Model</span>
+                      </div>
+                      <div className="col-6 border-bottom border-top border-left border-right text-center">
+                        <span>{car.model}</span>
+                      </div>
+                    </div>
+
+                    <div className="row mb-2">
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span className="font-weight-bold">Brand</span>
+                      </div>
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span>{car.brand}</span>
+                      </div>
+                    </div>
+
+                    <div className="row mb-2">
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span className="font-weight-bold">Year</span>
+                      </div>
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span>{car.year}</span>
+                      </div>
+                    </div>
+
+                    <div className="row mb-2">
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span className="font-weight-bold">Mileage</span>
+                      </div>
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span>{car.mileage}</span>
+                      </div>
+                    </div>
+
+                    <div className="row mb-2">
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span className="font-weight-bold">Type</span>
+                      </div>
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span>{car.type}</span>
+                      </div>
+                    </div>
+
+                    <div className="row mb-2">
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span className="font-weight-bold">Transmission</span>
+                      </div>
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span>{car.transmission}</span>
+                      </div>
+                    </div>
+
+                    <div className="row mb-2">
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span className="font-weight-bold">Fuel</span>
+                      </div>
+                      <div className="col-6 border-bottom border-left border-right text-center">
+                        <span>{car.fuel_type}</span>
+                      </div>
+                    </div>
+                    <div className="row mb-2">
+                      <div className="col-12 border-bottom border-left border-right text-center">
+                        <span className="font-weight-bold">Price: {car.price_per_day} <span className="text-muted ml-2">(inc of all taxes)</span></span>
+                      </div>
+                    </div>
                   </div>
                 </div>
+                </div>
+                </div>
+                
+
                 <div className="row">
                   <div className="col-6 form-group">
                     <div
@@ -209,30 +374,6 @@ function Booking() {
                         data-toggle="datetimepicker"
                       />
                     </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-6 form-group">
-                    <select
-                      className="custom-select px-4"
-                      style={{ height: "50px" }}
-                    >
-                      <option defaultValue>Select Adult</option>
-                      <option value={1}>Adult 1</option>
-                      <option value={2}>Adult 2</option>
-                      <option value={3}>Adult 3</option>
-                    </select>
-                  </div>
-                  <div className="col-6 form-group">
-                    <select
-                      className="custom-select px-4"
-                      style={{ height: "50px" }}
-                    >
-                      <option defaultValue>Select Child</option>
-                      <option value={1}>Child 1</option>
-                      <option value={2}>Child 2</option>
-                      <option value={3}>Child 3</option>
-                    </select>
                   </div>
                 </div>
                 <div className="form-group">
@@ -294,7 +435,7 @@ function Booking() {
                     </label>
                   </div>
                 </div>
-                <button className="btn btn-block btn-primary py-3">
+                <button className="btn btn-block btn-primary py-3" onClick={handleBooking}>
                   Reserve Now
                 </button>
               </div>

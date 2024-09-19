@@ -15,31 +15,31 @@ class Location(models.Model):
 
 class Car(models.Model):
     FUEL_TYPE_CHOICES = [
-        ('petrol', 'Petrol'),
-        ('diesel', 'Diesel'),
-        ('electric', 'Electric'),
-        ('hybrid', 'Hybrid'),
+        ('Petrol', 'Petrol'),
+        ('Diesel', 'Diesel'),
+        ('Electric', 'Electric'),
+        ('Hybrid', 'Hybrid'),
     ]
 
     TYPE_CHOICES = [
-        ('suv', 'SUV'),
-        ('sedan', 'Sedan'),
-        ('hatchback', 'Hatchback'),
-        ('convertible', 'Convertible'),
-        ('coupe', 'Coupe'),
-        ('wagon', 'Wagon'),
-        ('pickup', 'Pickup Truck'),
-        ('minivan', 'Minivan'),
-        ('sports', 'Sports Car'),
-        ('luxury', 'Luxury'),
-        ('cross_over', 'Crossover'),
-        ('roadster', 'Roadster'),
-        ('coupe_suv', 'Coupe SUV'),
+        ('Suv', 'SUV'),
+        ('Sedan', 'Sedan'),
+        ('Hatchback', 'Hatchback'),
+        ('Convertible', 'Convertible'),
+        ('Coupe', 'Coupe'),
+        ('Wagon', 'Wagon'),
+        ('Pickup', 'Pickup Truck'),
+        ('Minivan', 'Minivan'),
+        ('Sports Car', 'Sports Car'),
+        ('Luxury', 'Luxury'),
+        ('Crossover', 'Crossover'),
+        ('Roadster', 'Roadster'),
+        ('Coupe SUV', 'Coupe SUV'),
     ]
 
     TRANSMISSION_CHOICES = [
-        ('automatic', 'Automatic'),
-        ('manual', 'Manual'),
+        ('Automatic', 'Automatic'),
+        ('Manual', 'Manual'),
     ]
 
     pickup_location = models.ForeignKey(Location, related_name='pickup_cars', on_delete=models.CASCADE)
@@ -62,7 +62,6 @@ class Car(models.Model):
     def __str__(self):
         return f"{self.brand} {self.model} ({self.year})"
 
-
 class Customer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=20)
@@ -78,9 +77,8 @@ class Customer(models.Model):
 
 class Booking(models.Model):
     STATUS_CHOICES = [
-        ('confirmed', 'Confirmed'),
-        ('cancelled', 'Cancelled'),
-        ('completed', 'Completed'),
+        ('Confirmed', 'Confirmed'),
+        ('Completed', 'Completed'),
     ]
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -115,32 +113,6 @@ class Review(models.Model):
     def __str__(self):
         return f"Review by {self.customer.user.email} for {self.car}"
 
-class Insurance(models.Model):
-    car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    insurance_company = models.CharField(max_length=100)
-    policy_number = models.CharField(max_length=100)
-    coverage_details = models.TextField()
-    start_date = models.DateField()
-    end_date = models.DateField()
-
-    class Meta:
-        db_table = 'insurances'
-
-    def __str__(self):
-        return f"Policy {self.policy_number} by {self.insurance_company}"
-
-class Maintenance(models.Model):
-    car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    service_type = models.CharField(max_length=100)
-    description = models.TextField()
-    date = models.DateField()
-    cost = models.DecimalField(max_digits=10, decimal_places=2)
-
-    class Meta:
-        db_table = 'maintenances'
-
-    def __str__(self):
-        return f"Maintenance {self.id} for {self.car}"
 
 class Payment(models.Model):
     booking = models.OneToOneField('Booking', on_delete=models.CASCADE)
@@ -156,8 +128,6 @@ class Payment(models.Model):
     
     PAYMENT_STATUS_CHOICES = [
         ('Success', 'Success'),
-        ('Failed', 'Failed'),
-        ('Pending', 'Pending'),
     ]
     payment_status = models.CharField(max_length=50, choices=PAYMENT_STATUS_CHOICES)
 

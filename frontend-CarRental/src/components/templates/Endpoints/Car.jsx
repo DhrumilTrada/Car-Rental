@@ -3,25 +3,51 @@ import Carousel, { handleScrollToTop } from "../Carousels/Carousel";
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from 'react-redux';
 import { availableAtDate, viewLocations, reset } from '../features/cars_fetch/carSlice';
+import axios from "axios";
 
 function Car() {
   const dispatch = useDispatch();
-  const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
+  const [currentDate, setCurrentDate] = useState(() => {
+    const utcDate = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000;
+    const istDate = new Date(utcDate.getTime() + istOffset);
+    return istDate.toISOString().split('T')[0];
+  });
   const { carsAtDate, locations, isLoading, isError, message } = useSelector((state) => state.cars);
-
+  const [userData, setUserData] = useState({})
+  const token = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).access : ""
+  console.log(currentDate)
   useEffect(() => {
     dispatch(viewLocations());
     dispatch(availableAtDate(currentDate));
   }, [dispatch, currentDate]);
 
-  if (isLoading) {
-    return <h1>Loading...</h1>;
+  const fetch_user = async(token) => {
+    try {
+      const response = await axios.post('http://localhost:8000/user-details/', {}, {
+        headers:{
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      setUserData((prev) => {
+        return {
+          ...prev, 
+          "name": response.data.first_name, 
+          "lastName": response.data.last_name, 
+          "email": response.data.email
+        }
+      })
+      console.log(userData)
+    }catch (error) {
+      console.log(error)
+    }
   }
 
-  if (isError) {
-    return <h1>{message}</h1>;
-  }
-  
+  useEffect(() => {
+    if(token != ""){
+      fetch_user(token)
+    }
+  }, [])
   return (
     <>
       <div>
@@ -70,13 +96,13 @@ function Car() {
                         <span>{car.kms_driven/1000}K</span>{" "}
                       </div>
                     </div>
-                    <Link to='/booking' state={{ carIndex: car.id }}  className="btn btn-primary px-3">
+                    <Link to='/booking' state={{ carIndex: car.id, pickup_date: currentDate }}  className="btn btn-primary px-3">
                       {car.price_per_day}/Day
                     </Link>{" "}
                   </div>
                 </div>
               )) : <h1>Fetching Data</h1>}
-              {(!isLoading && carsAtDate && carsAtDate.unavailable && locations) ? carsAtDate.unavailable.map((car) => (
+              {(!isLoading && carsAtDate && carsAtDate.unavailable && carsAtDate.unavailable.length > 0 && locations) ? carsAtDate.unavailable.map((car) => (
                   <div className="col-lg-4 col-md-6 mb-2 unavailable" key={car.id}>
                   <div className="rent-item mb-4">
                     <img
@@ -106,7 +132,7 @@ function Car() {
                     </a>{" "}
                   </div>
                 </div>
-              )) : <h1>Fetching Data</h1>}
+              )) : ""}
             </div>
           </div>
         </div>

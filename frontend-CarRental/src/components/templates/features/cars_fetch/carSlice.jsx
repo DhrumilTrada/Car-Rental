@@ -58,11 +58,26 @@ export const getCar = createAsyncThunk(
   }
 );
 
+export const getCarByName = createAsyncThunk(
+  "cars/carByName",
+  async (model, thunkApi) => {
+    try {
+      return await carService.getCarByName(model);
+    } catch (error) {
+      let message = 
+        (error.response && error.response.data && error.response.data.message) || 
+        error.message || 
+        error.toString();
+      return thunkApi.rejectWithValue(message);
+    }
+  }
+);
+
 export const availableCars = createAsyncThunk(
   "cars/carAtLocation",
-  async (location, thunkApi) => {
+  async ({location, pickup}, thunkApi) => {
     try {
-      return await carService.availableCars(location);
+      return await carService.availableCars({location, pickup});
     } catch (error) {
       let message = 
         (error.response && error.response.data && error.response.data.message) || 
@@ -190,6 +205,19 @@ export const carSlice = createSlice({
         state.carById = action.payload;
       })
       .addCase(getCar.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getCarByName.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCarByName.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.carById = action.payload;
+      })
+      .addCase(getCarByName.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

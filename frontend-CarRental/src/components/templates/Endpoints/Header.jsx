@@ -1,19 +1,20 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import DatePickerC from "../React UI/DatePicker";
-import TimePickerC from "../React UI/TimePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
-import { availableCar, availableCars, viewLocations } from '../features/cars_fetch/carSlice';
-import { jwtDecode } from "jwt-decode";
+import { availableCar, availableCars, getCarByName, viewLocations } from '../features/cars_fetch/carSlice';
+import CustomDatePicker from "../React UI/DatePicker";
+import CustomTimePicker from "../React UI/TimePicker"
+import { toast } from "react-toastify";
+import Modal from 'react-bootstrap/Modal';
+import CloseButton from 'react-bootstrap/CloseButton';
+import axios from "axios";
 
-function Header() {
-  const user = localStorage.getItem("user");
-  if(user){
-    const access = JSON.parse(user)['access']
-    const user_id = jwtDecode(access)['user_id']
-  }
-  const location = useLocation();
+function Header() {   
+  const access = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).access : ""
+  const refresh = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).refresh : ""
+  const [show, setShow] = useState(false);
+  const location = useLocation();            
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentDate = new Date();
@@ -28,25 +29,127 @@ function Header() {
   const [loc, setLoc] = useState('')
   const [cars_state, setCarsState] = useState([])
   const today = new Date().toISOString().split("T")[0];
-  const { carsAtLocation, locations, isLoading, isError, message } = useSelector((state) => state.cars);
-        
+  const [carSelected, setCarSelected] = useState("")
+  const [user, setUser] = useState({})
+  const { carsAtLocation, carById, locations, isLoading } = useSelector((state) => state.cars);
+  const [formdata, setFormData] = useState({
+    "pickup_location":null,
+    "drop_location":null,
+    "pickup_date":date,
+    "pickup_time":time,
+    "car_selected":null,
+  })
+
+  const data = {
+    "pickup_location":"Pickup Location",
+    "pickup_date":"Pickup Date",
+    "pickup_time":"Pickup Time",
+    "car_selected":"Car",
+    "drop_location":"Drop Location",
+  }
+
+  const submitRequest = () => {
+    console.log(formdata)
+    for(let key in formdata){
+      if(formdata[key] == null || !formdata[key]){
+        // toast.error(`Please fill the ${data[key]} field`)
+      }
+    }
+    if(Object.values(formdata).every(value => value !== null)){
+      setShow(true)
+    }
+  }
+
+  const handleTimeChange = (newTime) => {
+    setTime(newTime);
+  };
+
+  const handleDateChange = (newDate) => {
+    setDate(newDate);
+  };
+
+  const handleChange = (e) => {
+    if(e.target.name === "car_selected"){
+      setCarSelected(e.target.value)
+    }
+    setFormData((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+    })
+  )}
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev, "pickup_date":date, "pickup_time":time
+    }))
+  }, [date, time])
+
+  const getUserInfo = async (token) => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/user-details/",{},{
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      );
+      setUser(response.data)
+    } catch (error) {
+      if (refresh) {
+        try {
+          const newToken = await axios.post(
+            "http://127.0.0.1:8000/api/v1/auth/jwt/refresh/",{"refresh":refresh},{
+              headers: {
+                "Content-Type": "application/json",
+              }
+            }
+          );
+          const newAccessToken = newToken.data.access;
+          localStorage.setItem(
+            "user",
+            JSON.stringify({refresh:refresh, access: newAccessToken })
+          );
+          toast.success("Generated a new access token for login.");
+          const retryResponse = await axios.post(
+            "http://127.0.0.1:8000/user-details/",{},{
+              headers: {
+                "Authorization": `Bearer ${newAccessToken}`
+              }
+            }
+          );  
+          return retryResponse.data;
+        } catch (refreshError) {
+          console.error("Failed to refresh token:", refreshError);
+          toast.error("Unable to refresh the access token.");
+        }
+      } else {
+        toast.error("No refresh token found.");
+      }
+    }
+  };
+
   useEffect(() => {
     setDate("")
     setTime("")
     dispatch(viewLocations())
     dispatch(availableCar())
+    getUserInfo(access)
   }, [])
 
   useEffect(() => {
-    dispatch(availableCars(loc))
-  }, [loc])
+    dispatch(availableCars({"location":loc, "pickup":date}))
+  }, [loc, date])
 
   useEffect(() => {
     if(locations && carsAtLocation){
-      setLocationsState(locations.map((locations) => locations.name))
-      setCarsState(carsAtLocation.map((cars) => cars.model))
+      setLocationsState(locations.map((location) => location.name))
+      setCarsState(carsAtLocation)
     }
   }, [carsAtLocation, locations])
+
+  useEffect(() => {
+    dispatch(getCarByName(carSelected))
+  }, [carSelected])
 
   const isCarsActive =
     location.pathname === "/car_display" ||
@@ -63,7 +166,6 @@ function Header() {
       dropdown.querySelector(".dropdown-menu").classList.remove("show");
     }
   };
-
 
   const handleLogout = () => {
     dispatch(logout());
@@ -228,7 +330,7 @@ function Header() {
                     </NavLink>
                   </div>
                 </div>
-                {user ? (
+                {access ? (
                   <>
                     <NavLink
                       to="/contact"
@@ -262,7 +364,12 @@ function Header() {
       <div className="container-fluid bg-white pt-3 px-lg-5">
         <div className="row mx-n2">
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select className="custom-select px-4" style={{ height: "40px" }} onChange={(e) => setLoc(e.target.value)}>
+            <select className="custom-select px-4" style={{ height: "40px" }} name="pickup_location" onChange={(e) => 
+              {
+                const selectedLocation = e.target.value;
+                setLoc(selectedLocation);
+                handleChange({ target: { name: 'pickup_location', value: selectedLocation } });
+              }}>
               <option value="">Pickup Location</option>``
               {locations_state.map((location, index) => (
                 <option key={index} value={location}>
@@ -272,7 +379,7 @@ function Header() {
             </select>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select className="custom-select px-4" style={{ height: "40px" }}>
+            <select className="custom-select px-4" name="drop_location" onChange={handleChange} style={{ height: "40px" }}>
               <option defaultValue>Drop Location</option>
               <option value={1}>Location 1</option>
               <option value={2}>Location 2</option>
@@ -280,17 +387,17 @@ function Header() {
             </select>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <DatePickerC date={date} minDate={today} />
+            <CustomDatePicker date={date} minDate={today} onDateChange={handleDateChange} />
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <TimePickerC time={time} />
+            <CustomTimePicker time={time} onTimeChange={handleTimeChange} />
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select className="custom-select px-4" style={{ height: "40px" }}>
+            <select className="custom-select px-4" name="car_selected" onChange={handleChange} style={{ height: "40px" }}>
               <option defaultValue>Select A Car</option>
-              {cars_state.map((car, index) => (
-                <option key={index} value={car}>
-                  {car}
+              {cars_state.map((car) => ( 
+                <option key={car.id} value={car.model}>
+                  {car.model}
                 </option>
               ))}
             </select>
@@ -298,13 +405,33 @@ function Header() {
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <button
               className="btn btn-primary btn-block"
-              style={{ height: "40px" }}
+              style={{ height: "40px" }} onClick={submitRequest}
             >
               Search
             </button>
           </div>
         </div>
       </div>
+      <Modal show={show} onHide={() => setShow(false)} dialogClassName="custom-modal" aria-labelledby="custom-modal-title contained-modal-title-vcenter">
+        <Modal.Header closeButton className="custom-modal-header">
+          <Modal.Title id="custom-modal-title">
+            DriveHex Rentals
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="custom-modal-body">
+          {(carById && show) ? 
+          <>
+            <p>{carById[0].model}</p> 
+            <p>{carById[0].brand}</p>
+            <p>{carById[0].description}</p>
+            <p>{carById[0].mileage}</p>
+            <p>{carById[0].transmission}</p>
+            <div className="text-center">
+              <Link onClick={() => {setShow(false)}} className="btn btn-primary px-3" style={{borderRadius:5}} state={{ carIndex: carById[0].id, user: user, pickup_date: formdata.pickup_date }} to='/booking'>Proceed to book.</Link>
+            </div>
+          </> : ""}
+        </Modal.Body>
+      </Modal>
     </>
   );
 }
