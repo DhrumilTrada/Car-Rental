@@ -27,16 +27,7 @@ function About() {
             <div className="col-lg-10 text-center">
               <img className="w-75 mb-4" src="/img/about.png" alt="" />
               <p>
-                Justo et eos et ut takimata sed sadipscing dolore lorem, et
-                elitr labore labore voluptua no rebum sed, stet voluptua amet
-                sed elitr ea dolor dolores no clita. Dolores diam magna clita ea
-                eos amet, amet rebum voluptua vero vero sed clita accusam
-                takimata. Nonumy labore ipsum sea voluptua sea eos sit justo, no
-                ipsum sanctus sanctus no et no ipsum amet, tempor labore est
-                labore no. Eos diam eirmod lorem ut eirmod, ipsum diam
-                sadipscing stet dolores elitr elitr eirmod dolore. Magna elitr
-                accusam takimata labore, et at erat eirmod consetetur tempor
-                eirmod invidunt est, ipsum nonumy at et.
+              Drive Hex is a multifaceted car rental platform designed to offer a seamless and convenient vehicle rental experience. With a wide selection of cars ranging from economy to luxury, Drive Hex caters to all types of travelers, from business professionals to vacationers. The website allows users to easily browse, compare, and book cars for short or long-term rentals. Offering features like real-time availability, flexible booking options, and 24/7 customer support, Drive Hex ensures that customers enjoy a hassle-free driving experience tailored to their unique needs.
               </p>
             </div>
           </div>
@@ -108,7 +99,7 @@ function About() {
                     Want to be driver?
                   </h3>
                   <p className="mb-4">
-                    Lorem justo sit sit ipsum eos lorem kasd, kasd labore
+                  Join our team of professional drivers and start your journey today. 
                   </p>
                   <a className="btn btn-primary py-2 px-4">Start Now</a>
                 </div>
@@ -124,7 +115,7 @@ function About() {
                     Looking for a car?
                   </h3>
                   <p className="mb-4">
-                    Lorem justo sit sit ipsum eos lorem kasd, kasd labore
+                  Find the perfect car for your needs with our extensive selection of vehicles.
                   </p>
                   <a className="btn btn-primary py-2 px-4">Start Now</a>
                 </div>

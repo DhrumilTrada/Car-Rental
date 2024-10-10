@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -14,39 +15,39 @@ function Footer() {
             <h4 className="text-uppercase text-light mb-4">Get In Touch</h4>
             <p className="mb-2">
               <i className="fa fa-map-marker-alt text-white mr-3" />
-              Location, City, Country
+              Ahmedabad, India
             </p>
             <p className="mb-2">
               <i className="fa fa-phone-alt text-white mr-3" />
-              +012 345 67890
+              +91 7405810278
             </p>
             <p>
               <i className="fa fa-envelope text-white mr-3" />
-              info@example.com
+              drivehex0422@gmail.com
             </p>
             <h6 className="text-uppercase text-white py-2">Follow Us</h6>
             <div className="d-flex justify-content-start">
               <a
                 className="btn btn-lg btn-dark btn-lg-square mr-2"
-                href="https://freewebsitecode.com/"
+                href="#"
               >
                 <i className="fab fa-twitter" />
               </a>
               <a
                 className="btn btn-lg btn-dark btn-lg-square mr-2"
-                href="https://facebook.com/freewebsitecode/"
+                href="#"
               >
                 <i className="fab fa-facebook-f" />
               </a>
               <a
                 className="btn btn-lg btn-dark btn-lg-square mr-2"
-                href="https://freewebsitecode.com/"
+                href="#"
               >
                 <i className="fab fa-linkedin-in" />
               </a>
               <a
                 className="btn btn-lg btn-dark btn-lg-square"
-                href="https://youtube.com/freewebsitecode"
+                href="#"
               >
                 <i className="fab fa-youtube" />
               </a>
@@ -124,9 +125,8 @@ function Footer() {
           {/* Newsletter */}
           <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 mb-5">
             <h4 className="text-uppercase text-light mb-4">Newsletter</h4>
-            <p className="mb-4">
-              Volup amet magna clita tempor. Tempor sea eos vero ipsum. Lorem
-              lorem sit sed elitr sed kasd et
+            <p className="mb-4 text-justify">
+            Are you ready for your next adventure? We've got the perfect car for you. Sign up for our newsletter and stay updated on the latest deals, exclusive offers, and travel tips!
             </p>
             <div className="w-100 mb-3">
               <div className="input-group">
@@ -137,13 +137,12 @@ function Footer() {
                   placeholder="Your Email"
                 />
                 <div className="input-group-append">
-                  <button className="btn btn-primary text-uppercase px-3">
+                  <Link to="/login" className="btn btn-primary text-uppercase px-3">
                     Sign Up
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
-            <i>Lorem sit sed elitr sed kasd et</i>
           </div>
         </div>
       </div>
@@ -151,12 +150,12 @@ function Footer() {
       {/* Footer bottom */}
       <div className="container-fluid bg-dark py-4 px-sm-3 px-md-5">
         <p className="mb-2 text-center text-body">
-          © <a href="https://freewebsitecode.com/">Your Site Name</a>. All
+          © <a href="#">DriveHex CarRentals</a>. All
           Rights Reserved.
         </p>
         <p className="m-0 text-center text-body">
           Designed by{" "}
-          <a href="https://freewebsitecode.com">Free Website Code</a>
+          <a href="https://github.com/DhrumilTrada">Dhrumil Trada</a>
         </p>
       </div>
       {/* Footer ends */}

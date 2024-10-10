@@ -1,21 +1,22 @@
 import React, { useRef } from 'react';
 
-export default function CustomDatePicker({ date, minDate, onDateChange }) {
+export default function CustomDatePicker({ date, minDate, onDateChange, disabled }) {
   const dateInputRef = useRef(null);
   const today = minDate;
 
   const handleIconClick = () => {
-    dateInputRef.current.showPicker(); // Opens the native date picker
+    dateInputRef.current.showPicker();
   };
 
   return (
     <div className="position-relative" style={{ display: 'flex', alignItems: 'center' }}>
       <input
         type="date"
+        disabled={disabled}
         style={{ height: "40px", paddingRight: "40px" }}
         className="form-control px-4"
         placeholder="Pickup Date"
-        min={today} // Sets today's date as the minimum date
+        min={today}
         value={date}
         onChange={(e) => onDateChange(e.target.value)}
         onClick={(e) => {

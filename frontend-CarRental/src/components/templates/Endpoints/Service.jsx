@@ -35,8 +35,7 @@ function Service() {
                 </div>
                 <h4 className="text-uppercase mb-3">Car Rental</h4>
                 <p className="m-0">
-                  Kasd dolor no lorem nonumy sit labore tempor at justo rebum
-                  rebum stet, justo elitr dolor amet sit sea sed
+                We offer a wide selection of vehicles for short-term and long-term rentals, catering to your needs and budget.
                 </p>
               </div>
             </div>
@@ -53,8 +52,7 @@ function Service() {
                 </div>
                 <h4 className="text-uppercase mb-3">Car Financing</h4>
                 <p className="m-0">
-                  Kasd dolor no lorem nonumy sit labore tempor at justo rebum
-                  rebum stet, justo elitr dolor amet sit sea sed
+                Flexible financing options to help you own your dream car with affordable payment plans.
                 </p>
               </div>
             </div>
@@ -71,8 +69,7 @@ function Service() {
                 </div>
                 <h4 className="text-uppercase mb-3">Car Inspection</h4>
                 <p className="m-0">
-                  Kasd dolor no lorem nonumy sit labore tempor at justo rebum
-                  rebum stet, justo elitr dolor amet sit sea sed
+                Comprehensive vehicle inspections to ensure safety and optimal performance before hitting the road.
                 </p>
               </div>
             </div>
@@ -89,8 +86,7 @@ function Service() {
                 </div>
                 <h4 className="text-uppercase mb-3">Auto Repairing</h4>
                 <p className="m-0">
-                  Kasd dolor no lorem nonumy sit labore tempor at justo rebum
-                  rebum stet, justo elitr dolor amet sit sea sed
+                Expert repair services to keep your car running smoothly and reliably.
                 </p>
               </div>
             </div>
@@ -107,8 +103,7 @@ function Service() {
                 </div>
                 <h4 className="text-uppercase mb-3">Auto Painting</h4>
                 <p className="m-0">
-                  Kasd dolor no lorem nonumy sit labore tempor at justo rebum
-                  rebum stet, justo elitr dolor amet sit sea sed
+                Professional auto painting services to restore or upgrade your vehicle's appearance.
                 </p>
               </div>
             </div>
@@ -125,8 +120,7 @@ function Service() {
                 </div>
                 <h4 className="text-uppercase mb-3">Auto Cleaning</h4>
                 <p className="m-0">
-                  Kasd dolor no lorem nonumy sit labore tempor at justo rebum
-                  rebum stet, justo elitr dolor amet sit sea sed
+                Complete auto cleaning services to keep your car spotless inside and out.
                 </p>
               </div>
             </div>

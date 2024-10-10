@@ -475,3 +475,344 @@ input:disabled {
     border-style: solid;
     border-color: #333 transparent transparent transparent;
 }
+.custom-container{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  padding: 30px;
+}
+
+.custom-container *{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.custom-container .container {
+  position: relative;
+  max-width: 850px;
+  width: 100%;
+  border-radius: 40px;
+  background: #fff;
+  padding: 40px 30px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.6);
+  perspective: 2700px;
+}
+
+.custom-container .container .cover {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 50%;
+  z-index: 98;
+  transition: all 1s ease;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.custom-container .container #flip:checked ~ .cover {
+  transform: rotateY(-180deg);
+}
+
+.custom-container .container #flip:checked ~ .forms .login-form {
+  pointer-events: none;
+}
+
+.custom-container .container .cover .front,
+.custom-container .container .cover .back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.custom-container .cover .back {
+  transform: rotateY(180deg);
+}
+
+.custom-container .container .cover img {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 40px;
+  z-index: 10;
+}
+
+.custom-container .container .cover .text {
+  position: absolute;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-container .container .cover .text::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 40px;
+  opacity: 0.5;
+  background: #303b8c;
+}
+
+.custom-container .cover .text .text-1,
+.custom-container .cover .text .text-2 {
+  z-index: 20;
+  font-size: 26px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}
+
+.custom-container .cover .text .text-2 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.custom-container .container .forms {
+  height: 100%;
+  width: 100%;
+  background: #fff;
+}
+
+.custom-container .container .form-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.custom-container .form-content .login-form,
+.custom-container .form-content .signup-form {
+  width: calc(100% / 2 - 25px);
+}
+
+.custom-container .forms .form-content .title {
+  position: relative;
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+}
+
+.custom-container .forms .form-content .title:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 25px;
+  background: #7d2ae8;
+}
+
+.custom-container .forms .signup-form .title:before {
+  width: 20px;
+}
+
+.custom-container .forms .form-content .input-boxes {
+  margin-top: 30px;
+}
+
+.custom-container .forms .form-content .input-box {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+  margin: 10px 0;
+  position: relative;
+}
+
+.custom-container .form-content .input-box input {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 0 30px;
+  font-size: 16px;
+  font-weight: 500;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.custom-container .form-content .input-box input:focus,
+.custom-container .form-content .input-box input:valid {
+  border-color: #7d2ae8;
+}
+
+.custom-container .form-content .input-box i {
+  position: absolute;
+  color: #000000;
+  font-size: 17px;
+}
+
+.custom-container .forms .form-content .text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.custom-container .forms .form-content .text a {
+  text-decoration: none;
+}
+
+.custom-container .forms .form-content .text a:hover {
+  text-decoration: underline;
+}
+
+.custom-container .forms .form-content .button {
+  color: #fff;
+  margin-top: 40px;
+}
+
+.custom-container .forms .form-content .button input {
+  color: #fff;
+  background: #7d2ae8;
+  border-radius: 6px;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.custom-container .forms .form-content .button input:hover {
+  background: #5b13b9;
+}
+
+.custom-container .forms .form-content label {
+  color: #5b13b9;
+  cursor: pointer;
+}
+
+.custom-container .forms .form-content label:hover {
+  text-decoration: underline;
+}
+
+.custom-container .forms .form-content .login-text,
+.custom-container .forms .form-content .sign-up-text {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.custom-container .container #flip {
+  display: none;
+}
+
+@media (max-width: 730px) {
+  .custom-container .container .cover {
+    display: none;
+  }
+
+  .custom-container .form-content .login-form,
+  .custom-container .form-content .signup-form {
+    width: 100%;
+  }
+
+  .custom-container .form-content .signup-form {
+    display: none;
+  }
+
+  .custom-container .container #flip:checked ~ .forms .signup-form {
+    display: block;
+  }
+
+  .custom-container .container #flip:checked ~ .forms .login-form {
+    display: none;
+  }
+}
+
+.profile-page {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  align-items: center;
+  min-height:100vh
+ 
+}
+
+.profile-card {
+  background-color: white;
+  width: 50%; 
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 55%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  border:1px solid #010103;
+}
+
+
+.profile-card:hover {
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.profile-img {
+  width: 100px; 
+  height: 100px; 
+  margin-bottom: 10px; 
+
+  border-radius: 50%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.profile-header h1 {
+  font-size: 2rem; 
+  margin: 10px 0;
+  font-weight: 600;
+}
+
+.designation {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 10px; 
+}
+
+
+.profile-info h2 {
+  font-size: 1.6rem; 
+  color: #1C1E32;
+  border-bottom: 2px solid #F77D0A;
+  display: inline-block;
+  padding-bottom: 5px;  
+}
+
+.profile-info p {
+  font-size: 1.4rem;
+  color: #2B2E4A;
+  margin: 5px 0; 
+}
+
+.profile-info strong {
+  font-weight: 600;
+}
+
+.social-icons {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.social-icons a {
+  margin: 0 10px; 
+  color: #1C1E32;
+  font-size: 1.6rem; 
+  transition: color 0.3s, transform 0.3s;
+}
+
+.social-icons a:hover {
+  color: #F77D0A;
+  transform: scale(1.1);
+}

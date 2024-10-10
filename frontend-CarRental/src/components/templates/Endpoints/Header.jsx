@@ -7,7 +7,6 @@ import CustomDatePicker from "../React UI/DatePicker";
 import CustomTimePicker from "../React UI/TimePicker"
 import { toast } from "react-toastify";
 import Modal from 'react-bootstrap/Modal';
-import CloseButton from 'react-bootstrap/CloseButton';
 import axios from "axios";
 
 function Header() {   
@@ -123,7 +122,7 @@ function Header() {
           toast.error("Unable to refresh the access token.");
         }
       } else {
-        toast.error("No refresh token found.");
+        toast.error("No refresh token found login to generate one.");
       }
     }
   };
@@ -181,12 +180,12 @@ function Header() {
             <div className="d-inline-flex align-items-center">
               <a className="text-body pr-3">
                 <i className="fa fa-phone-alt mr-2" />
-                +012 345 6789
+                +91 7405810278
               </a>
               <span className="text-body">|</span>
               <a className="text-body px-3">
                 <i className="fa fa-envelope mr-2" />
-                info@example.com
+                drivehex0422@gmail.com
               </a>
             </div>
           </div>
@@ -194,22 +193,22 @@ function Header() {
             <div className="d-inline-flex align-items-center">
               <a
                 className="text-body px-3"
-                href="https://facebook.com/freewebsitecode/"
+                href="#"
               >
                 <i className="fab fa-facebook-f" />
               </a>
-              <a className="text-body px-3" href="https://freewebsitecode.com/">
+              <a className="text-body px-3" href="#">
                 <i className="fab fa-twitter" />
               </a>
-              <a className="text-body px-3" href="https://freewebsitecode.com/">
+              <a className="text-body px-3" href="#">
                 <i className="fab fa-linkedin-in" />
               </a>
-              <a className="text-body px-3" href="https://freewebsitecode.com/">
+              <a className="text-body px-3" href="#">
                 <i className="fab fa-instagram" />
               </a>
               <a
                 className="text-body pl-3"
-                href="https://youtube.com/freewebsitecode/"
+                href="#"
               >
                 <i className="fab fa-youtube" />
               </a>
@@ -364,13 +363,19 @@ function Header() {
       <div className="container-fluid bg-white pt-3 px-lg-5">
         <div className="row mx-n2">
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select className="custom-select px-4" style={{ height: "40px" }} name="pickup_location" onChange={(e) => 
-              {
+            <select
+              className="custom-select px-4"
+              style={{ height: "40px" }}
+              name="pickup_location"
+              onChange={(e) => {
                 const selectedLocation = e.target.value;
                 setLoc(selectedLocation);
-                handleChange({ target: { name: 'pickup_location', value: selectedLocation } });
-              }}>
-              <option value="">Pickup Location</option>``
+                handleChange({
+                  target: { name: "pickup_location", value: selectedLocation },
+                });
+              }}
+            >
+              <option value="">Pickup Location</option>
               {locations_state.map((location, index) => (
                 <option key={index} value={location}>
                   {location}
@@ -379,23 +384,39 @@ function Header() {
             </select>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select className="custom-select px-4" name="drop_location" onChange={handleChange} style={{ height: "40px" }}>
+            <select
+              className="custom-select px-4"
+              name="drop_location"
+              onChange={handleChange}
+              style={{ height: "40px" }}
+            >
               <option defaultValue>Drop Location</option>
-              <option value={1}>Location 1</option>
-              <option value={2}>Location 2</option>
-              <option value={3}>Location 3</option>
+              {locations_state.map((location, index) => (
+                <option key={index} value={location}>
+                  {location}
+                </option>
+              ))}
             </select>
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <CustomDatePicker date={date} minDate={today} onDateChange={handleDateChange} />
+            <CustomDatePicker
+              date={date}
+              minDate={today}
+              onDateChange={handleDateChange}
+            />
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <CustomTimePicker time={time} onTimeChange={handleTimeChange} />
           </div>
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
-            <select className="custom-select px-4" name="car_selected" onChange={handleChange} style={{ height: "40px" }}>
+            <select
+              className="custom-select px-4"
+              name="car_selected"
+              onChange={handleChange}
+              style={{ height: "40px" }}
+            >
               <option defaultValue>Select A Car</option>
-              {cars_state.map((car) => ( 
+              {cars_state.map((car) => (
                 <option key={car.id} value={car.model}>
                   {car.model}
                 </option>
@@ -405,31 +426,52 @@ function Header() {
           <div className="col-xl-2 col-lg-4 col-md-4 col-sm-6 px-2 mb-3">
             <button
               className="btn btn-primary btn-block"
-              style={{ height: "40px" }} onClick={submitRequest}
+              style={{ height: "40px" }}
+              onClick={submitRequest}
             >
               Search
             </button>
           </div>
         </div>
       </div>
-      <Modal show={show} onHide={() => setShow(false)} dialogClassName="custom-modal" aria-labelledby="custom-modal-title contained-modal-title-vcenter">
+      <Modal
+        show={show}
+        onHide={() => setShow(false)}
+        dialogClassName="custom-modal"
+        aria-labelledby="custom-modal-title contained-modal-title-vcenter"
+      >
         <Modal.Header closeButton className="custom-modal-header">
-          <Modal.Title id="custom-modal-title">
-            DriveHex Rentals
-          </Modal.Title>
+          <Modal.Title id="custom-modal-title">DriveHex Rentals</Modal.Title>
         </Modal.Header>
         <Modal.Body className="custom-modal-body">
-          {(carById && show) ? 
-          <>
-            <p>{carById[0].model}</p> 
-            <p>{carById[0].brand}</p>
-            <p>{carById[0].description}</p>
-            <p>{carById[0].mileage}</p>
-            <p>{carById[0].transmission}</p>
-            <div className="text-center">
-              <Link onClick={() => {setShow(false)}} className="btn btn-primary px-3" style={{borderRadius:5}} state={{ carIndex: carById[0].id, user: user, pickup_date: formdata.pickup_date }} to='/booking'>Proceed to book.</Link>
-            </div>
-          </> : ""}
+          {carById && show ? (
+            <>
+              <p style={{fontFamily:"inherit"}}><span style={{fontSize:"18px", color:"orange", fontWeight:"bold", fontFamily:"robota"}}>Brand: </span>{carById[0].brand}</p>
+              <p style={{fontFamily:"inherit"}}><span style={{fontSize:"18px", color:"orange", fontWeight:"bold", fontFamily:"robota"}}>Model: </span>{carById[0].model}</p>
+              <p style={{fontFamily:"inherit"}}><span style={{fontSize:"18px", color:"orange", fontWeight:"bold", fontFamily:"robota"}}>Description: </span>{carById[0].description}</p>
+              <p style={{fontFamily:"inherit"}}><span style={{fontSize:"18px", color:"orange", fontWeight:"bold", fontFamily:"robota"}}>Mileage: </span>{carById[0].mileage} km/liter</p>
+              <p style={{fontFamily:"inherit"}}><span style={{fontSize:"18px", color:"orange", fontWeight:"bold", fontFamily:"robota"}}>Transmission: </span>{carById[0].transmission}</p>
+              <div className="text-center">
+                <Link
+                  onClick={() => {
+                    setShow(false);
+                  }}
+                  className="btn btn-primary px-3"
+                  style={{ borderRadius: 5 }}
+                  state={{
+                    carIndex: carById[0].id,
+                    user: user,
+                    pickup_date: formdata.pickup_date,
+                  }}
+                  to="/booking"
+                >
+                  Proceed to book.
+                </Link>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
         </Modal.Body>
       </Modal>
     </>

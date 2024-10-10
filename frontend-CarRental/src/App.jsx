@@ -7,18 +7,18 @@ import Booking from "./components/templates/Endpoints/Booking";
 import Car from "./components/templates/Endpoints/Car";
 import Contact from "./components/templates/Endpoints/Contact";
 import Detail from "./components/templates/Endpoints/Detail";
-import Login from "./components/templates/Authentication/Login";
 import Service from "./components/templates/Endpoints/Service";
 import Team from "./components/templates/Endpoints/Team";
 import Testimonial from "./components/templates/Endpoints/Testimonial";
 import LoginPage from "./components/templates/Authentication/Login1";
-import RegisterPage from "./components/templates/Authentication/RegisterPage";
-import ActivatePage from "./components/templates/Authentication/ActivatePage";
-import ResetPasswordPage from "./components/templates/Authentication/ResetPasswordPage"
-import ResetPasswordPageConfirm from "./components/templates/Authentication/ResetPasswordPageConfirm"
-import { ToastContainer } from"react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import ResetPasswordPage from "./components/templates/Authentication/ResetPassword";
+import ResetPasswordConfirm from "./components/templates/Authentication/ResetPasswordConfirm";
+import Protected from "./components/templates/Authentication/Protected";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import $ from "jquery";
+import CustomerDetails from "./components/templates/Endpoints/CustomerDetails";
+import ActivationPage from "./components/templates/Authentication/Activation";
 
 function App() {
   useEffect(() => {
@@ -36,7 +36,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route path="" element={<Index />} />
           <Route path="about" element={<About />} />
-          <Route path="booking" element={<Booking />} />
+          <Route path="booking" element={<Protected Component={Booking} />} />
           <Route path="car_display" element={<Car />} />
           <Route path="details" element={<Detail />} />
           <Route path="service" element={<Service />} />
@@ -45,10 +45,13 @@ function App() {
           <Route path="contact" element={<Contact />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/activate/:uid/:token" element={<ActivatePage />} />
+        <Route path="/detailss" element={<CustomerDetails />} />
+        <Route path="/activate/:uid/:token" element={<ActivationPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/password/reset/confirm/:uid/:token" element={<ResetPasswordPageConfirm />} />
+        <Route
+          path="/password/reset/confirm/:uid/:token"
+          element={<ResetPasswordConfirm />}
+        />
       </>
     )
   );

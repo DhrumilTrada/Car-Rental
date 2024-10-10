@@ -16,7 +16,6 @@ function Car() {
   const { carsAtDate, locations, isLoading, isError, message } = useSelector((state) => state.cars);
   const [userData, setUserData] = useState({})
   const token = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).access : ""
-  console.log(currentDate)
   useEffect(() => {
     dispatch(viewLocations());
     dispatch(availableAtDate(currentDate));
@@ -37,7 +36,6 @@ function Car() {
           "email": response.data.email
         }
       })
-      console.log(userData)
     }catch (error) {
       console.log(error)
     }
@@ -76,7 +74,7 @@ function Car() {
                   <div className="rent-item mb-4">
                     <img
                       className="img-fluid mb-4"
-                      src="img/car-rent-5.png"
+                      src={car.image}
                     />
                     <h4 className="text-uppercase mb-2">{car.model}</h4>
                     {locations.filter((loc) => loc.id === car.pickup_location)?.map((loc) => (  

@@ -68,7 +68,7 @@ class Customer(models.Model):
     address = models.TextField()
     driving_license_number = models.CharField(max_length=50)
     license_expiry_date = models.DateField()
-
+    
     class Meta:
         db_table = 'customers'
 

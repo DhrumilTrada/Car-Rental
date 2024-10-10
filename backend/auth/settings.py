@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import environ
 from datetime import timedelta
@@ -150,3 +151,6 @@ EMAIL_HOST_PASSWORD = 'snqzrkzoaoutgjac'
 DEFAULT_FROM_EMAIL = 'drivehex0422@gmail.com'
 DOMAIN = env("DOMAIN") 
 SITE_NAME = 'DriveHex'
+
+MEDIA_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '..', 'frontend-CarRental', 'public')
+MEDIA_URL = '/'

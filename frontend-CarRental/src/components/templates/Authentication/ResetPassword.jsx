@@ -1,13 +1,11 @@
+import './ResetPasswordPage.css'; 
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from 'react-toastify'
 import { useDispatch, useSelector } from 'react-redux'
-import { BiLogInCircle } from "react-icons/bi"
-import Spinner from '../Spinner'
 import { resetPassword } from "../features/auth/authSlice"
 
-const LoginPage = () => {
-
+export default function ResetPasswordPage() {
     const [formData, setFormData] = useState({
         "email": "",
     })
@@ -37,7 +35,6 @@ const LoginPage = () => {
 
         dispatch(resetPassword(userData))
     }
-
     useEffect(() => {
         if (isError) {
             toast.error(message)
@@ -46,34 +43,33 @@ const LoginPage = () => {
             navigate("/")
             toast.success("A reset password email has been sent to you.")
         }
-
-
     }, [isError, isSuccess, message
         , dispatch])
 
-
-
-    return (
-        <>
-            <div className="container auth__container">
-                <h1 className="main__title">Reset Password <BiLogInCircle /></h1>
-
-                {isLoading && <Spinner />}
-
-                <form className="auth__form">
-                    <input type="text"
-                        placeholder="email"
-                        name="email"
-                        onChange={handleChange}
-                        value={email}
-                        required
-                    />
-
-                    <button className="btn btn-primary" type="submit" onClick={handleSubmit}>Reset Password</button>
-                </form>
-            </div>
-        </>
-    )
+  return (
+    <div className="container">
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="box-effect p-5 text-center">
+          <h1 className="mb-4">Drive Hex Car Rentals</h1>
+          <p className="mb-4 text-muted">
+            Please enter your email address to receive a link to reset your password.
+          </p>
+          <div className="mb-4">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="form-control"
+              name="email"
+              onChange={handleChange}
+              value={email}
+              required
+            />
+          </div>
+          <button onClick={handleSubmit} className="btn btn-primary btn-lg">
+            Send Reset Link
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
-
-export default LoginPage

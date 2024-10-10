@@ -7,7 +7,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
-    list_display = ('id', 'brand', 'model', 'year', 'mileage', 'price_per_day', 'type', 'fuel_type', 'transmission', 'pickup_location', 'is_Available')
+    list_display = ('id', 'brand', 'model', 'year', 'mileage', 'price_per_day', 'type', 'fuel_type', 'transmission', 'pickup_location', 'image')
     list_filter = ('type', 'fuel_type', 'transmission', 'is_Available')
     search_fields = ('brand', 'model')
 
